@@ -500,6 +500,9 @@
             bottom: 0;
             left: 0;
             z-index: -1;
+            @include respond-below(custom767) {
+                display: none;
+            }
         }
     }
     p {
@@ -1150,13 +1153,21 @@
         margin-bottom: 24px;
         @include respond-below(custom991) {
             max-width: inherit;
-            &:last-child {
-                margin-bottom: 0;   
-            }
         } 
         @include respond-below(custom767) {
             font-size: $font-size-14;
             margin-bottom: 20px;
+        }
+    }
+    .download-app-img {
+        a {
+            margin-right: 10px;
+            &:last-child {
+                margin-right: 0;   
+            }
+            img {
+                width: 130px;
+            }
         }
     }
 }
