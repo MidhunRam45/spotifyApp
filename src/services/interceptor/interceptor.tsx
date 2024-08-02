@@ -1,13 +1,8 @@
 import React, { createContext, useContext, useRef } from 'react';
 import axios, { AxiosInstance, AxiosResponse, CancelTokenSource } from 'axios';
-import { useLoader } from '../loader/loaderContext';
+import { useLoader } from '../loader/loaderContext'
 import { toast } from 'react-toastify';
 import store from '../../core/redux/store';
-import {
-  logout,
-  setLoginUserDetails,
-  setUserDetails,
-} from '../../core/redux/loginSlice';
 import { useDispatch } from 'react-redux';
 
 export const AxiosContext = createContext<any>({});
@@ -133,11 +128,11 @@ const AxiosProvider = (props: { children: any }) => {
         }
         case 401:
           toast.error('Unauthorized request');
-          setTimeout(() => {
-            store.dispatch(logout());
-          }, 1000);
-          dispatch(setLoginUserDetails(undefined));
-          dispatch(setUserDetails(undefined));
+          // setTimeout(() => {
+          //   store.dispatch(logout());
+          // }, 1000);
+          // dispatch(setLoginUserDetails(undefined));
+          // dispatch(setUserDetails(undefined));
           break;
         default:
           // showError('Error type not found')
