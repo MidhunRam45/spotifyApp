@@ -8,6 +8,9 @@ import Pages from "./pages/pages";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/scss/main.scss";
+import "./assets/icons/feather/css/iconfont.css";
+import "./assets/icons/fontawesome/css/fontawesome.min.css";
+import "./assets/icons/fontawesome/css/all.min.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

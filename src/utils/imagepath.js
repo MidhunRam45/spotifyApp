@@ -6,6 +6,10 @@ export { default as trustIcon } from '../assets/img/icons/trust-icon.svg';
 export { default as mobileImg } from '../assets/img/mobile-img.png';
 export { default as mobileTruck } from '../assets/img/mobile-truck.png';
 export { default as favicon } from '../assets/img/favicon.png';
+export { default as visaImg } from '../assets/img/visa-img.png';
+export { default as masterImg } from '../assets/img/master-img.png';
+export { default as amexImg } from '../assets/img/amex-img.png';
+export { default as truckTire } from '../assets/img/truck-tire.png';
 
 
 export { default as shape01 } from '../assets/img/shapes/shape-01.png';
