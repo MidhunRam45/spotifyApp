@@ -1,40 +1,44 @@
-.page-header-breadcrumb {
-  .breadcrumb-item+.breadcrumb-item::before {
-    content: var(--bs-breadcrumb-divider, "\ea65");
-    font-family: "tabler-icons" !important;
-  }
-}
-[dir="rtl"] {
-  .page-header-breadcrumb {
-    .breadcrumb-item+.breadcrumb-item::before {
-      content: var(--bs-breadcrumb-divider, "\ea64");
-      font-family: "tabler-icons" !important;
+.breadcrumb-bar {
+  background: $dark-blue;
+  @include margin-padding(0, 20px 0 10px);
+  .breadcrumb-info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: space-between;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    .breadcrumb-title {
+      font-size: $font-size-20;
+      color: $white;
+      margin-bottom: 10px;
+      @include respond-below(custom767) {
+        font-size: $font-size-18;
+      }
     }
   }
-}
-.breadcrumb {
-  justify-content: flex-end;
-  -webkit-justify-content: flex-end;
-  -ms-flex-pack: flex-end;
-  margin-bottom: 10px;
-  @include respond-below(custom575) {
-    justify-content: start;
-    -webkit-justify-content: start;
-    -ms-flex-pack: start;
+  .breadcrumb {
+    @include margin-padding(0, 0);
   }
   .breadcrumb-item {
     font-size: $font-size-14;
-    color: $black;
+    color: $white;
+    margin-bottom: 10px;
     a {
-      color: $primary;
+      color: $orange;
       &:hover {
-        color: $primary-hover;
+        color: $primary;
       }
     }
   }
 }
 .breadcrumb-item+.breadcrumb-item::before {
-  color: $black;
+  color: $white;
 }
 .breadcrumb-arrow {
   .breadcrumb-item+.breadcrumb-item::before {

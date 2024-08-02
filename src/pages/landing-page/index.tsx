@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   aboutImg,
-  amexImg,
   avatar01,
   avatar14,
   avatar18,
@@ -11,8 +10,6 @@ import {
   avatar30,
   bannerApp,
   bannerImg,
-  logo,
-  masterImg,
   mobileImg,
   mobileTruck,
   shape01,
@@ -25,104 +22,20 @@ import {
   shape09,
   truckTire,
   trustIcon,
-  visaImg,
   work01,
   work02,
   work03,
   work04,
 } from "../../utils/imagepath";
-import { all_routes } from "../../utils/router/routes";
 import "aos/dist/aos.css";
 import AOS from "aos";
 
 const LandingPage = () => {
-  const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
   return (
     <>
-      {" "}
-      {/* Main Wrapper */}
-      <div className="main-wrapper">
-        {/* Header */}
-        <header className="header">
-          <div className="container">
-            <nav className="navbar navbar-expand-lg header-nav">
-              <div className="navbar-header">
-                <Link id="mobile_btn" to="#">
-                  <span className="bar-icon">
-                    <span />
-                    <span />
-                    <span />
-                  </span>
-                </Link>
-                <Link to={routes.landingPage} className="navbar-brand logo">
-                  <img
-                    src={logo}
-                    className="img-fluid"
-                    alt="Logo"
-                  />
-                </Link>
-                <Link to={routes.landingPage} className="navbar-brand logo-small">
-                  <img
-                    src={logo}
-                    className="img-fluid"
-                    alt="Logo"
-                  />
-                </Link>
-              </div>
-              <div className="main-menu-wrapper">
-                <div className="menu-header">
-                  <Link to={routes.landingPage} className="menu-logo">
-                    <img
-                      src={logo}
-                      className="img-fluid"
-                      alt="Logo"
-                    />
-                  </Link>
-                  <Link
-                    id="menu_close"
-                    className="menu-close"
-                    to="#"
-                  >
-                    {" "}
-                    <i className="fas fa-times" />
-                  </Link>
-                </div>
-                <ul className="main-nav">
-                  <li className="active">
-                    <Link to={routes.landingPage}>Home</Link>
-                  </li>
-                  <li>
-                    <Link to="#">About</Link>
-                  </li>
-                  <li>
-                    <Link to="#">How it works</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Pricing</Link>
-                  </li>
-                  <li>
-                    <Link to="#">Contact Us</Link>
-                  </li>
-                  <li className="login-link">
-                    <Link to="#">Register</Link>
-                  </li>
-                </ul>
-              </div>
-              <ul className="nav header-navbar-rht">
-                <li className="nav-item">
-                  <Link className="nav-link header-reg" to="#">
-                    <span />
-                    Register
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
-        {/* /Header */}
         {/* Banner */}
         <section className="banner-section">
           <div className="banner-shapes">
@@ -736,154 +649,6 @@ const LandingPage = () => {
           </div>
         </section>
         {/* /Download App */}
-        {/* Footer */}
-        <footer className="footer-section">
-          {/* Footer Top */}
-          <div className="footer-top">
-            <div className="container">
-              <div className="row">
-                {/* Footer Widget */}
-                <div className="col-lg-4 col-md-6 aos" data-aos="fade-up">
-                  <div className="footer-widget">
-                    <div className="footer-logo">
-                      <Link to={routes.landingPage}>
-                        <img src={logo} alt="Logo" />
-                      </Link>
-                    </div>
-                    <div className="footer-content">
-                      <p>
-                        Masters of Motion Logistics, or M.O.M., as we’re
-                        affectionately known, is just that, the matriarch of our
-                        trucking family. We see our drivers as family, and we
-                        want to add that special touch to transportation and
-                        take care of our family in ensuring their safe arrival
-                        home.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* /Footer Widget */}
-                {/* Footer Widget */}
-                <div className="col-lg-2 col-md-6 aos" data-aos="fade-up">
-                  <div className="footer-widget footer-menu">
-                    <h2 className="footer-title">Quick Links</h2>
-                    <ul>
-                      <li>
-                        <Link to={routes.landingPage}>Home</Link>
-                      </li>
-                      <li>
-                        <Link to="#">About Us</Link>
-                      </li>
-                      <li>
-                        <Link to="pricing.html">Pricing Plans</Link>
-                      </li>
-                      <li>
-                        <Link to="#">Contact Us</Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                {/* /Footer Widget */}
-                {/* Footer Widget */}
-                <div className="col-lg-2 col-md-6 aos" data-aos="fade-up">
-                  <div className="footer-widget footer-menu">
-                    <h2 className="footer-title">Others</h2>
-                    <ul>
-                      <li>
-                        <Link to="#">Blogs</Link>
-                      </li>
-                      <li>
-                        <Link to="#">Terms and Conditions</Link>
-                      </li>
-                      <li>
-                        <Link to="#">Privacy Policy</Link>
-                      </li>
-                      <li>
-                        <Link to="#">Cookie Policy</Link>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                {/* /Footer Widget */}
-                {/* Footer Widget */}
-                <div className="col-lg-4 col-md-6 aos" data-aos="fade-up">
-                  <div className="footer-widget footer-contact">
-                    <h2 className="footer-title">Contact</h2>
-                    <div className="footer-address">
-                      <span>
-                        <i className="feather icon-phone-call" />
-                      </span>
-                      <p>
-                        <b>Phone Number:</b> 1-800-874-5114
-                      </p>
-                    </div>
-                    <div className="footer-address">
-                      <span>
-                        <i className="feather icon-mail" />
-                      </span>
-                      <p>
-                        <b>Email:</b> info@mastersofmotionlogistics.com
-                        sales@mastersofmotionlogistics.com
-                        quotes@mastersofmotionlogistics.com
-                      </p>
-                    </div>
-                    <div className="footer-address">
-                      <span>
-                        <i className="feather icon-map-pin" />
-                      </span>
-                      <p>
-                        <b>Address:</b> 3333 Preston Road, Suite 300 - 1358
-                        Frisco, Texas 75034
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {/* /Footer Widget */}
-              </div>
-            </div>
-          </div>
-          {/* /Footer Top */}
-          {/* Footer Bottom */}
-          <div className="footer-bottom">
-            <div className="container">
-              <div className="footer-social-info">
-                <ul className="nav">
-                  <li>
-                    <img src={visaImg} alt="Visa" />
-                  </li>
-                  <li>
-                    <img src={masterImg} alt="Master" />
-                  </li>
-                  <li>
-                    <img src={amexImg} alt="Amex" />
-                  </li>
-                </ul>
-                <div className="social-link">
-                  <Link to="#">
-                    <i className="fab fa-facebook-f hi-icon" />
-                  </Link>
-                  <Link to="#">
-                    <i className="fab fa-twitter hi-icon" />
-                  </Link>
-                  <Link to="#">
-                    <i className="fab fa-linkedin-in hi-icon" />
-                  </Link>
-                  <Link to="#">
-                    <i className="fab fa-youtube hi-icon" />
-                  </Link>
-                </div>
-              </div>
-              <div className="copyright">
-                Copyright © 2024 Master of Motion Logistics. All rights are
-                reserved.
-              </div>
-            </div>
-          </div>
-          {/* /Footer Bottom */}
-        </footer>
-        {/* Footer */}
-      </div>
-      {/* /Main Wrapper */}
     </>
   );
 };
