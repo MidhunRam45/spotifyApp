@@ -12,6 +12,9 @@ export { default as amexImg } from '../assets/img/amex-img.png';
 export { default as truckTire } from '../assets/img/truck-tire.png';
 export { default as companyLogo } from '../assets/img/company-logo.jpg';
 export { default as freeIcon } from '../assets/img/icons/free-icon.svg';
+export { default as appStore } from '../assets/img/app-strore.png';
+export { default as googlePlay } from '../assets/img/google-play.png';
+
 
 
 export { default as shape01 } from '../assets/img/shapes/shape-01.png';
