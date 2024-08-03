@@ -11,16 +11,26 @@ import "./assets/scss/main.scss";
 import "./assets/icons/feather/css/iconfont.css";
 import "./assets/icons/fontawesome/css/fontawesome.min.css";
 import "./assets/icons/fontawesome/css/all.min.css";
+import ApiServiceProvider from '../src/services/api/api.service'
+import AxiosProvider from "./services/interceptor/interceptor";
+import { LoaderProvider } from "./services/loader/loaderContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
+      <LoaderProvider>
+      <AxiosProvider>
       <BrowserRouter>
-        <Pages />
+      <ApiServiceProvider>
+      <Pages />
+      </ApiServiceProvider>
+        
       </BrowserRouter>
+      </AxiosProvider>
+      </LoaderProvider>
     </Provider>
-  </React.StrictMode>
+  </>
 );

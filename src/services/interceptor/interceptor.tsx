@@ -20,8 +20,9 @@ const AxiosProvider = (props: { children: any }) => {
         showLoader();
       }
 
-      const token = store?.getState()?.login?.token;
-      config.baseURL = API_URL;
+      const token = 'test'; //store?.getState()?.login?.token;
+      //config.baseURL = API_URL;
+      config.baseURL = 'https://development-truckingapp-backend.dreamstechnologies.com/api/';
       if (config.url === '/test') {
         config.headers = {
           ...config.headers,
