@@ -2,6 +2,7 @@ import React,{ useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiServiceContext } from '../../services/api/api.service';
 import { end_points } from '../../services/end_point/end_points'
+import { all_routes } from '../../utils/router/routes';
 
 
 const Plans = () => {
@@ -81,7 +82,7 @@ const Plans = () => {
                   <span className="month-bill annually-bill">
                     /Month (annually billed)
                   </span>
-                  <Link to="#" className="btn btn-white">
+                  <Link to={all_routes.companyRegister} className="btn btn-white">
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
