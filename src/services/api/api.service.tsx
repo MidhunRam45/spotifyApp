@@ -30,6 +30,7 @@ const ApiServiceProvider = (props: {
   };
 
   const getData = (url: string) => {
+    
     return new Promise((resolve, reject) => {
       axiosInstance
         .get(url)

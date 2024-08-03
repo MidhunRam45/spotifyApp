@@ -15,9 +15,9 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      APP_URL: JSON.stringify('https://dev-truckingapp.dreamstechnologies.com'),
+      APP_URL: JSON.stringify('https://development-truckingapp-backend.dreamstechnologies.com/api'),
       API_URL: JSON.stringify(
-        // 'https://dev-cc-apigateway.dreamstechnologies.com/api/',
+        'https://development-truckingapp-backend.dreamstechnologies.com/api',
         // 'http://localhost:9000/api/'
       ),
       DEV_MODE: JSON.stringify('development'),
