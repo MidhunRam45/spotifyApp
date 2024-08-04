@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   companyLogo,
@@ -11,12 +11,55 @@ import {
 import { all_routes } from "../../utils/router/routes";
 import "aos/dist/aos.css";
 import AOS from "aos";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { ApiServiceContext } from "../../services/api/api.service";
 
 const CompanyRegister = () => {
+  const { postData } = useContext(ApiServiceContext);
+
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
+
+  const validationSchema = Yup.object().shape({
+    companyName: Yup.string().required("Company Name is required"),
+    domainName: Yup.string().required("Domain Name is required"),
+    companyEmail: Yup.string()
+      .email("Invalid email format")
+      .required("Company Email is required"),
+    companyPhoneNumber: Yup.string().required(
+      "Company Phone Number is required"
+    ),
+    companyAddress: Yup.string()
+      .max(255, "Maximum 255 characters allowed")
+      .required("Company Address is required"),
+    contactPersonName: Yup.string().required("Contact Person Name is required"),
+    contactPersonEmail: Yup.string()
+      .email("Invalid email format")
+      .required("Contact Person Email is required"),
+    contactPersonPhoneNumber: Yup.string().required(
+      "Contact Person Phone Number is required"
+    ),
+    // companyLogo: Yup.mixed().required("Company Logo is required"),
+  });
+
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = (data: any) => {
+    console.log("Form submitted");
+    console.log("Form data", data);
+  };
+
   return (
     <>
       {/* Breadcrumb */}
@@ -61,7 +104,7 @@ const CompanyRegister = () => {
           </div>
           <div className="row">
             <div className="col-md-12 col-lg-8 col-xl-8">
-              <form action="#">
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="company-info">
                   <h4 className="company-title">Company Details</h4>
                   <div className="company-card">
@@ -71,11 +114,23 @@ const CompanyRegister = () => {
                           <label>
                             Company Name <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Company Name"
+                          <Controller defaultValue=""
+                            name="companyName"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Company Name"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.companyName && (
+                            <small className="text-danger">
+                              {errors.companyName.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -83,11 +138,23 @@ const CompanyRegister = () => {
                           <label>
                             Domain Name <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Domain Name"
+                          <Controller defaultValue=""
+                            name="domainName"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Domain Name"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.domainName && (
+                            <small className="text-danger">
+                              {errors.domainName.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -95,11 +162,23 @@ const CompanyRegister = () => {
                           <label>
                             Company Email <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Company Email"
+                          <Controller defaultValue=""
+                            name="companyEmail"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Company Email"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.companyEmail && (
+                            <small className="text-danger">
+                              {errors.companyEmail.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -108,11 +187,23 @@ const CompanyRegister = () => {
                             Company Phone Number{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Mobile Number"
+                          <Controller defaultValue=""
+                            name="companyPhoneNumber"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Mobile Number"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.companyPhoneNumber && (
+                            <small className="text-danger">
+                              {errors.companyPhoneNumber.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -121,11 +212,23 @@ const CompanyRegister = () => {
                             Company Address{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Address"
+                          <Controller defaultValue=""
+                            name="companyAddress"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Address"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.companyAddress && (
+                            <small className="text-danger">
+                              {errors.companyAddress.message}
+                            </small>
+                          )}
                           <p className="address-maximum">
                             <i className="feather icon-alert-circle" /> Maximum
                             255 Characters
@@ -145,11 +248,23 @@ const CompanyRegister = () => {
                             Contact Person Name{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Contact Person Name"
+                          <Controller defaultValue=""
+                            name="contactPersonName"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Contact Person Name"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.contactPersonName && (
+                            <small className="text-danger">
+                              {errors.contactPersonName.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -158,11 +273,23 @@ const CompanyRegister = () => {
                             Contact Person Email{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Contact Person Email"
+                          <Controller defaultValue=""
+                            name="contactPersonEmail"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Contact Person Email"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.contactPersonEmail && (
+                            <small className="text-danger">
+                              {errors.contactPersonEmail.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -171,27 +298,52 @@ const CompanyRegister = () => {
                             Contact Person Phone Number{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter Contact Person Phone Number"
+                          <Controller defaultValue=""
+                            name="contactPersonPhoneNumber"
+                            control={control}
+                            render={({ field }) => (
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter Contact Person Phone Number"
+                                {...field}
+                              />
+                            )}
                           />
+                          {errors.contactPersonPhoneNumber && (
+                            <small className="text-danger">
+                              {errors.contactPersonPhoneNumber.message}
+                            </small>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="company-info">
+                {/* <div className="company-info">
                   <h4 className="company-title">Company Logo</h4>
                   <div className="form-wrap">
                     <div className="upload-info">
                       <label className="file-upload">
-                        <input type="file" />
+                        <input
+                          type="file"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            if (file) {
+                              setValue("companyLogo", file);
+                            }
+                          }}
+                        />
                         <span>
                           <i className="feather icon-upload" /> Choose to File
                           Upload
                         </span>
                       </label>
+                      {errors.companyLogo && (
+                        <small className="text-danger">
+                          {errors.companyLogo.message}
+                        </small>
+                      )}
                       <p>
                         <i className="feather icon-alert-circle" /> Maximum File
                         size 10MB &amp; PNG, JPEG, SVG
@@ -200,22 +352,22 @@ const CompanyRegister = () => {
                   </div>
                   <div className="upload-grid">
                     <div className="upload-img">
-                      <img src={companyLogo} alt="Logo" />
+                      <img src="" alt="Logo" />
                     </div>
                     <div className="upload-text">
                       <h6>Logo_Name.png</h6>
                       <p>
-                        18KB <Link to="#">Remove</Link>
+                        18KB <a href="#">Remove</a>
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="form-wrap">
                   <div className="company-btns">
                     <button type="submit" className="btn btn-primary">
                       Create
                     </button>
-                    <button type="submit" className="btn btn-light">
+                    <button type="reset" className="btn btn-light">
                       Cancel
                     </button>
                   </div>
