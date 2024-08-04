@@ -15,6 +15,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
+import { end_points } from "../../services/core.index";
 
 const CompanyRegister = () => {
   const { postData } = useContext(ApiServiceContext);
@@ -55,7 +56,10 @@ const CompanyRegister = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
+    let urls = end_points.company_register.url;
+    const response = await postData(urls,data);
+    console.log("response",response)
     console.log("Form submitted");
     console.log("Form data", data);
   };

@@ -23,7 +23,7 @@ const Plans = () => {
     //console.log(urls);
     // urls += `?searchTerm=${nameSearch}`
     const response = await getData(urls);
-    if (response?.status == 200) {
+    if (response?.status === 200) {
       console.log(response?.data?.data);
       setPlansList(response?.data?.data?.prices);
     }
