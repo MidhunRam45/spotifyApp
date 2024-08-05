@@ -1,9 +1,11 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { getPreloadedState, saveToLocalStorage } from './localStorage';
 import sidebarSlice from './sidebarSlice';
+import planSlice from './planSlice';
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
+  plan: planSlice 
 });
 
 const rootReducer = (state, action) => {

@@ -4,8 +4,12 @@ import { ApiServiceContext } from '../../services/api/api.service';
 import { end_points } from '../../services/end_point/end_points'
 import { all_routes } from '../../utils/router/routes';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { setPlanId } from '../../core/redux/planSlice';
 
 const Plans = () => {
+  const dispatch = useDispatch()
+
   const { getData } = useContext(ApiServiceContext)
   const [plansList, setPlansList] = useState<any>([])
 
@@ -27,7 +31,6 @@ const Plans = () => {
     // urls += `?searchTerm=${nameSearch}`
     const response = await getData(urls)
     if (response?.status == 200) {
-      console.log(response?.data?.data);
       setPlansList(response?.data?.data?.prices)
     }
   }
@@ -70,7 +73,7 @@ const Plans = () => {
             </div>
             <div className="row justify-content-center">
             {plansList.map((plan : any) => (
-              <div className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
+              <div key={plan.plan_id} className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
               <div className="pricing-card w-100">
                 <div className="pricing-plan-header">
                     <h5>{plan.plan_name}</h5>
@@ -82,7 +85,7 @@ const Plans = () => {
                   <span className="month-bill annually-bill">
                     /Month (annually billed)
                   </span>
-                  <Link to={all_routes.companyRegister} className="btn btn-white">
+                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanId(plan.plan_id))} className="btn btn-white">
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
