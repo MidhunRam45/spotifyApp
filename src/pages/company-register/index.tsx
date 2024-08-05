@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  companyLogo,
+  company_image,
   freeIcon,
   shape04,
   shape06,
@@ -17,8 +17,20 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 
+interface FormValues {
+  company_name: string;
+  company_email: string;
+  company_phone: string;
+  address: string;
+  contact_person_name: string;
+  contact_person_email: string;
+  contact_person_phone: string;
+  company_image: File | null;
+}
+
 const CompanyRegister = () => {
   const { postData } = useContext(ApiServiceContext);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const routes = all_routes;
   useEffect(() => {
@@ -27,48 +39,69 @@ const CompanyRegister = () => {
 
   const validationSchema = Yup.object().shape({
     company_name: Yup.string().required("Company Name is required"),
-    domainName: Yup.string()
-    .matches(/^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?:[A-Z|a-z]{2,6})$/, 'Domain name is not valid')
-    .required('Domain name is required'),
+    // domainName: Yup.string().required("Domain Name is required"),
     company_email: Yup.string()
       .email("Invalid email format")
       .required("Company Email is required"),
-      company_phone: Yup.string()
-    .matches(/^(\+1\s?)?(\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}$/, 'Company Phone number is not valid')
-    .required('Company Phone number is required'),
+    company_phone: Yup.string().required("Company Phone Number is required"),
     address: Yup.string()
       .max(255, "Maximum 255 characters allowed")
       .required("Company Address is required"),
-      contact_person_name: Yup.string()
-    .matches(/^[A-Za-zÀ-ÖØ-ÿ' -]{2,}$/, 'Name is not valid.')
-    .required('Contact person name is required.'),
+    contact_person_name: Yup.string().required(
+      "Contact Person Name is required"
+    ),
     contact_person_email: Yup.string()
       .email("Invalid email format")
       .required("Contact Person Email is required"),
-      contact_person_phone: Yup.string().required(
+    contact_person_phone: Yup.string().required(
       "Contact Person Phone Number is required"
     ),
-    // companyLogo: Yup.mixed().required("Company Logo is required"),
-  });
+    company_image: Yup.mixed()
+    .required("Company Logo is required")
+    .test("fileSize", "File Size should not exceed 10MB", (value) => {
+      return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
+    })
+    .test("fileType", "Unsupported File Format", (value) => {
+      return (
+        value && ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
+      );
+    }),
+   });
 
   const {
     control,
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
   });
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setValue("company_image", file, { shouldValidate: true });
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+    }
+  };
+
   const onSubmit = async (data: any) => {
-    try{
+    try {
       let urls = end_points.company_register.url;
-      const response = await postData(urls,data);
-      console.log("response",response)
+      const response = await postData(urls, data);
+      console.log("response", response);
       console.log("Form submitted");
       console.log("Form data", data);
-    }catch(e){
-      console.log(e)
+    } catch (e) {
+      console.log(e);
+      if (data.company_image) {
+        console.log("Company Image Name:", data.company_image.name);
+        console.log("Company Image Type:", data.company_image.type);
+        console.log("Company Image Size:", (data.company_image.size / 1024).toFixed(2), "KB");
+      } else {
+        console.log("No company image uploaded");
+      }
     }
   };
 
@@ -126,7 +159,8 @@ const CompanyRegister = () => {
                           <label>
                             Company Name <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="company_name"
                             control={control}
                             render={({ field }) => (
@@ -174,7 +208,8 @@ const CompanyRegister = () => {
                           <label>
                             Company Email <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="company_email"
                             control={control}
                             render={({ field }) => (
@@ -199,7 +234,8 @@ const CompanyRegister = () => {
                             Company Phone Number{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="company_phone"
                             control={control}
                             render={({ field }) => (
@@ -224,7 +260,8 @@ const CompanyRegister = () => {
                             Company Address{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="address"
                             control={control}
                             render={({ field }) => (
@@ -260,7 +297,8 @@ const CompanyRegister = () => {
                             Contact Person Name{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="contact_person_name"
                             control={control}
                             render={({ field }) => (
@@ -285,7 +323,8 @@ const CompanyRegister = () => {
                             Contact Person Email{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="contact_person_email"
                             control={control}
                             render={({ field }) => (
@@ -310,7 +349,8 @@ const CompanyRegister = () => {
                             Contact Person Phone Number{" "}
                             <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="contact_person_phone"
                             control={control}
                             render={({ field }) => (
@@ -332,28 +372,24 @@ const CompanyRegister = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="company-info">
+                <div className="company-info">
                   <h4 className="company-title">Company Logo</h4>
                   <div className="form-wrap">
                     <div className="upload-info">
                       <label className="file-upload">
-                        <input
+                        <input name="company_image"
                           type="file"
-                          onChange={(event) => {
-                            const file = event.target.files?.[0];
-                            if (file) {
-                              setValue("companyLogo", file);
-                            }
-                          }}
+                          accept="image/png, image/jpeg, image/svg+xml"
+                          onChange={handleFileChange}
                         />
                         <span>
-                          <i className="feather icon-upload" /> Choose to File
+                          <i className="feather icon-upload" /> Choose File to
                           Upload
                         </span>
                       </label>
-                      {errors.companyLogo && (
+                      {errors.company_image && (
                         <small className="text-danger">
-                          {errors.companyLogo.message}
+                          {errors.company_image.message}
                         </small>
                       )}
                       <p>
@@ -362,18 +398,17 @@ const CompanyRegister = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="upload-grid">
-                    <div className="upload-img">
-                      <img src="" alt="Logo" />
+                  {preview && (
+                    <div className="upload-grid">
+                      <div className="upload-img">
+                        <img src={preview} alt="Logo" />
+                      </div>
+                      <div className="upload-text">
+                        <h6>Logo Preview</h6>
+                      </div>
                     </div>
-                    <div className="upload-text">
-                      <h6>Logo_Name.png</h6>
-                      <p>
-                        18KB <a href="#">Remove</a>
-                      </p>
-                    </div>
-                  </div>
-                </div> */}
+                  )}
+                </div>
                 <div className="form-wrap">
                   <div className="company-btns">
                     <button type="submit" className="btn btn-primary">

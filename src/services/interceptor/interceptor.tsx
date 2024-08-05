@@ -4,6 +4,7 @@ import { useLoader } from '../loader/loaderContext'
 import { toast } from 'react-toastify';
 import store from '../../core/redux/store';
 import { useDispatch } from 'react-redux';
+import { end_points } from '../core.index';
 
 export const AxiosContext = createContext<any>({});
 
@@ -23,12 +24,12 @@ const AxiosProvider = (props: { children: any }) => {
       const token = 'test'; //store?.getState()?.login?.token;
       //config.baseURL = API_URL;
       config.baseURL = 'https://development-truckingapp-backend.dreamstechnologies.com/api/';
-      if (config.url === '/test') {
+      if (config.url.startsWith(end_points.company_register.url) ) {
         config.headers = {
           ...config.headers,
           Authorization: `Bearer ${token}`,
           token: `${token}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'multipart/form-data',
           Accept: 'application/json',
         };
       } else {

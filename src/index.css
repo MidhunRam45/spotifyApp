@@ -1,0 +1,12 @@
+.pricing-card:hover {
+  background: #ffffff;
+  border: 1px solid #1570ef;
+}
+.pricing-card:hover .pricing-plan-header .btn-white {
+  border: 1px solid #0d59c4;
+  background: #0d59c4;
+  color: #fff;
+}
+.pricing-card:hover .pricing-plan-header .btn-white i {
+    color: #fff;
+}
