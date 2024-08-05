@@ -26,22 +26,22 @@ const CompanyRegister = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    companyName: Yup.string().required("Company Name is required"),
-    domainName: Yup.string().required("Domain Name is required"),
-    companyEmail: Yup.string()
+    company_name: Yup.string().required("Company Name is required"),
+    // domainName: Yup.string().required("Domain Name is required"),
+    company_email: Yup.string()
       .email("Invalid email format")
       .required("Company Email is required"),
-    companyPhoneNumber: Yup.string().required(
+    company_phone: Yup.string().required(
       "Company Phone Number is required"
     ),
-    companyAddress: Yup.string()
+    address: Yup.string()
       .max(255, "Maximum 255 characters allowed")
       .required("Company Address is required"),
-    contactPersonName: Yup.string().required("Contact Person Name is required"),
-    contactPersonEmail: Yup.string()
+    contact_person_name: Yup.string().required("Contact Person Name is required"),
+    contact_person_email: Yup.string()
       .email("Invalid email format")
       .required("Contact Person Email is required"),
-    contactPersonPhoneNumber: Yup.string().required(
+    contact_person_phone: Yup.string().required(
       "Contact Person Phone Number is required"
     ),
     // companyLogo: Yup.mixed().required("Company Logo is required"),
@@ -57,11 +57,15 @@ const CompanyRegister = () => {
   });
 
   const onSubmit = async (data: any) => {
-    let urls = end_points.company_register.url;
-    const response = await postData(urls,data);
-    console.log("response",response)
-    console.log("Form submitted");
-    console.log("Form data", data);
+    try{
+      let urls = end_points.company_register.url;
+      const response = await postData(urls,data);
+      console.log("response",response)
+      console.log("Form submitted");
+      console.log("Form data", data);
+    }catch(e){
+      console.log(e)
+    }
   };
 
   return (
@@ -119,7 +123,7 @@ const CompanyRegister = () => {
                             Company Name <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyName"
+                            name="company_name"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -130,15 +134,15 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyName && (
+                          {errors.company_name && (
                             <small className="text-danger">
-                              {errors.companyName.message}
+                              {errors.company_name.message}
                             </small>
                           )}
                         </div>
                       </div>
                       <div className="col-md-6">
-                        <div className="form-wrap">
+                        {/* <div className="form-wrap">
                           <label>
                             Domain Name <span className="text-danger">*</span>
                           </label>
@@ -159,7 +163,7 @@ const CompanyRegister = () => {
                               {errors.domainName.message}
                             </small>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                       <div className="col-md-6">
                         <div className="form-wrap">
@@ -167,7 +171,7 @@ const CompanyRegister = () => {
                             Company Email <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyEmail"
+                            name="company_email"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -178,9 +182,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyEmail && (
+                          {errors.company_email && (
                             <small className="text-danger">
-                              {errors.companyEmail.message}
+                              {errors.company_email.message}
                             </small>
                           )}
                         </div>
@@ -192,7 +196,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyPhoneNumber"
+                            name="company_phone"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -203,9 +207,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyPhoneNumber && (
+                          {errors.company_phone && (
                             <small className="text-danger">
-                              {errors.companyPhoneNumber.message}
+                              {errors.company_phone.message}
                             </small>
                           )}
                         </div>
@@ -217,7 +221,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyAddress"
+                            name="address"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -228,9 +232,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyAddress && (
+                          {errors.address && (
                             <small className="text-danger">
-                              {errors.companyAddress.message}
+                              {errors.address.message}
                             </small>
                           )}
                           <p className="address-maximum">
@@ -253,7 +257,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonName"
+                            name="contact_person_name"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -264,9 +268,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonName && (
+                          {errors.contact_person_name && (
                             <small className="text-danger">
-                              {errors.contactPersonName.message}
+                              {errors.contact_person_name.message}
                             </small>
                           )}
                         </div>
@@ -278,7 +282,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonEmail"
+                            name="contact_person_email"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -289,9 +293,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonEmail && (
+                          {errors.contact_person_email && (
                             <small className="text-danger">
-                              {errors.contactPersonEmail.message}
+                              {errors.contact_person_email.message}
                             </small>
                           )}
                         </div>
@@ -303,7 +307,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonPhoneNumber"
+                            name="contact_person_phone"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -314,9 +318,9 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonPhoneNumber && (
+                          {errors.contact_person_phone && (
                             <small className="text-danger">
-                              {errors.contactPersonPhoneNumber.message}
+                              {errors.contact_person_phone.message}
                             </small>
                           )}
                         </div>
@@ -356,12 +360,12 @@ const CompanyRegister = () => {
                   </div>
                   <div className="upload-grid">
                     <div className="upload-img">
-                      <img src="" alt="Logo" />
+                      <img src={companyLogo} alt="Logo" />
                     </div>
                     <div className="upload-text">
                       <h6>Logo_Name.png</h6>
                       <p>
-                        18KB <a href="#">Remove</a>
+                        18KB <Link to="#">Remove</Link>
                       </p>
                     </div>
                   </div>

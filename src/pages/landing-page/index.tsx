@@ -32,6 +32,7 @@ import {
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Plans from "./plans";
+import { Link as ScrollLink } from "react-scroll";
 
 const LandingPage = () => {
   useEffect(() => {
@@ -118,7 +119,13 @@ const LandingPage = () => {
           </div>
         </div>
         <div className="scroll-down-info">
-          <Link className="smooth-menu" to="#about-us">
+          <ScrollLink
+            className="smooth-menu"
+            to="about-us"
+            smooth={true}
+            duration={500}
+            offset={-70}
+          >
             <div className="scroll-down">
               <div className="scroll-center">
                 <div className="scroll-mouse">
@@ -132,7 +139,7 @@ const LandingPage = () => {
                 </div>
               </div>
             </div>
-          </Link>
+          </ScrollLink>
         </div>
       </section>
       {/* /Banner */}
@@ -387,7 +394,7 @@ const LandingPage = () => {
             <div className="row align-items-center">
               <div className="col-lg-7 col-md-12 aos" data-aos="fade-up">
                 <div className="download-img">
-                  <img src={mobileImg}alt="Mobile" />
+                  <img src={mobileImg} alt="Mobile" />
                 </div>
               </div>
               <div className="col-lg-5 col-md-12">
