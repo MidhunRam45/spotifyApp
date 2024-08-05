@@ -15,6 +15,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
+import { end_points } from "../../services/core.index";
 
 const CompanyRegister = () => {
   const { postData } = useContext(ApiServiceContext);
@@ -25,26 +26,26 @@ const CompanyRegister = () => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    companyName: Yup.string().required("Company Name is required"),
+    company_name: Yup.string().required("Company Name is required"),
     domainName: Yup.string()
     .matches(/^(?=.{1,253}$)(?!-)[A-Za-z0-9-]{1,63}(?<!-)\.(?:[A-Z|a-z]{2,6})$/, 'Domain name is not valid')
     .required('Domain name is required'),
-    companyEmail: Yup.string()
+    company_email: Yup.string()
       .email("Invalid email format")
       .required("Company Email is required"),
-    companyPhoneNumber: Yup.string()
+      company_phone: Yup.string()
     .matches(/^(\+1\s?)?(\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}$/, 'Company Phone number is not valid')
     .required('Company Phone number is required'),
-    companyAddress: Yup.string()
+    address: Yup.string()
       .max(255, "Maximum 255 characters allowed")
       .required("Company Address is required"),
-    contactPersonName: Yup.string()
+      contact_person_name: Yup.string()
     .matches(/^[A-Za-zÀ-ÖØ-ÿ' -]{2,}$/, 'Name is not valid.')
     .required('Contact person name is required.'),
-    contactPersonEmail: Yup.string()
+    contact_person_email: Yup.string()
       .email("Invalid email format")
       .required("Contact Person Email is required"),
-    contactPersonPhoneNumber: Yup.string().required(
+      contact_person_phone: Yup.string().required(
       "Contact Person Phone Number is required"
     ),
     // companyLogo: Yup.mixed().required("Company Logo is required"),
@@ -59,9 +60,16 @@ const CompanyRegister = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form submitted");
-    console.log("Form data", data);
+  const onSubmit = async (data: any) => {
+    try{
+      let urls = end_points.company_register.url;
+      const response = await postData(urls,data);
+      console.log("response",response)
+      console.log("Form submitted");
+      console.log("Form data", data);
+    }catch(e){
+      console.log(e)
+    }
   };
 
   return (
@@ -119,7 +127,7 @@ const CompanyRegister = () => {
                             Company Name <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyName"
+                            name="company_name"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -130,15 +138,15 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyName && (
-                            <div className="text-danger">
-                              {errors.companyName.message}
-                            </div>
+                          {errors.company_name && (
+                            <small className="text-danger">
+                              {errors.company_name.message}
+                            </small>
                           )}
                         </div>
                       </div>
                       <div className="col-md-6">
-                        <div className="form-wrap">
+                        {/* <div className="form-wrap">
                           <label>
                             Domain Name <span className="text-danger">*</span>
                           </label>
@@ -155,11 +163,11 @@ const CompanyRegister = () => {
                             )}
                           />
                           {errors.domainName && (
-                            <div className="text-danger">
+                            <small className="text-danger">
                               {errors.domainName.message}
-                            </div>
+                            </small>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                       <div className="col-md-6">
                         <div className="form-wrap">
@@ -167,7 +175,7 @@ const CompanyRegister = () => {
                             Company Email <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyEmail"
+                            name="company_email"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -178,10 +186,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyEmail && (
-                            <div className="text-danger">
-                              {errors.companyEmail.message}
-                            </div>
+                          {errors.company_email && (
+                            <small className="text-danger">
+                              {errors.company_email.message}
+                            </small>
                           )}
                         </div>
                       </div>
@@ -192,7 +200,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyPhoneNumber"
+                            name="company_phone"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -203,10 +211,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyPhoneNumber && (
-                            <div className="text-danger">
-                              {errors.companyPhoneNumber.message}
-                            </div>
+                          {errors.company_phone && (
+                            <small className="text-danger">
+                              {errors.company_phone.message}
+                            </small>
                           )}
                         </div>
                       </div>
@@ -217,7 +225,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="companyAddress"
+                            name="address"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -228,10 +236,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.companyAddress && (
-                            <div className="text-danger">
-                              {errors.companyAddress.message}
-                            </div>
+                          {errors.address && (
+                            <small className="text-danger">
+                              {errors.address.message}
+                            </small>
                           )}
                           <p className="address-maximum">
                             <i className="feather icon-alert-circle" /> Maximum
@@ -253,7 +261,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonName"
+                            name="contact_person_name"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -264,10 +272,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonName && (
-                            <div className="text-danger">
-                              {errors.contactPersonName.message}
-                            </div>
+                          {errors.contact_person_name && (
+                            <small className="text-danger">
+                              {errors.contact_person_name.message}
+                            </small>
                           )}
                         </div>
                       </div>
@@ -278,7 +286,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonEmail"
+                            name="contact_person_email"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -289,10 +297,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonEmail && (
-                            <div className="text-danger">
-                              {errors.contactPersonEmail.message}
-                            </div>
+                          {errors.contact_person_email && (
+                            <small className="text-danger">
+                              {errors.contact_person_email.message}
+                            </small>
                           )}
                         </div>
                       </div>
@@ -303,7 +311,7 @@ const CompanyRegister = () => {
                             <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="contactPersonPhoneNumber"
+                            name="contact_person_phone"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -314,10 +322,10 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.contactPersonPhoneNumber && (
-                            <div className="text-danger">
-                              {errors.contactPersonPhoneNumber.message}
-                            </div>
+                          {errors.contact_person_phone && (
+                            <small className="text-danger">
+                              {errors.contact_person_phone.message}
+                            </small>
                           )}
                         </div>
                       </div>
@@ -344,9 +352,9 @@ const CompanyRegister = () => {
                         </span>
                       </label>
                       {errors.companyLogo && (
-                        <div className="text-danger">
+                        <small className="text-danger">
                           {errors.companyLogo.message}
-                        </div>
+                        </small>
                       )}
                       <p>
                         <i className="feather icon-alert-circle" /> Maximum File

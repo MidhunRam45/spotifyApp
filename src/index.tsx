@@ -11,7 +11,7 @@ import "./assets/scss/main.scss";
 import "./assets/icons/feather/css/iconfont.css";
 import "./assets/icons/fontawesome/css/fontawesome.min.css";
 import "./assets/icons/fontawesome/css/all.min.css";
-import ApiServiceProvider from '../src/services/api/api.service'
+import ApiServiceProvider from "../src/services/api/api.service";
 import AxiosProvider from "./services/interceptor/interceptor";
 import { LoaderProvider } from "./services/loader/loaderContext";
 
@@ -22,14 +22,13 @@ root.render(
   <>
     <Provider store={store}>
       <LoaderProvider>
-      <AxiosProvider>
-      <BrowserRouter>
-      <ApiServiceProvider>
-      <Pages />
-      </ApiServiceProvider>
-        
-      </BrowserRouter>
-      </AxiosProvider>
+        <AxiosProvider>
+          <BrowserRouter>
+            <ApiServiceProvider>
+              <Pages />
+            </ApiServiceProvider>
+          </BrowserRouter>
+        </AxiosProvider>
       </LoaderProvider>
     </Provider>
   </>

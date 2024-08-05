@@ -10,4 +10,5 @@ interface EndPoint {
 export const end_points: Record<string, EndPoint> = {
   // Authentication
   price_list: { url: '/PricingPlan/get_priceplan', service: 'ms1' },
+  company_register: { url: '/authentication/register', service: 'ms2' },
 };
