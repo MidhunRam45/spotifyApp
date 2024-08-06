@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   company_image,
   freeIcon,
@@ -17,7 +17,11 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
+/* import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; */
 import { toast } from 'react-toastify';
+
+
 
 
 interface FormValues {
@@ -34,6 +38,7 @@ interface FormValues {
 const CompanyRegister = (prop:any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
+  const navigate = useNavigate();
   const selectedPlan = useSelector(
     (state: any) => state.plan.selectedPlan
   );
@@ -47,7 +52,6 @@ const CompanyRegister = (prop:any) => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
-    window.scrollTo(0, 0);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -70,17 +74,16 @@ const CompanyRegister = (prop:any) => {
       "Contact Person Phone Number is required"
     ),
     company_image: Yup.mixed()
-      .required("Company Logo is required")
-      .test("fileSize", "File Size should not exceed 10MB", (value) => {
-        return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
-      })
-      .test("fileType", "Unsupported File Format", (value) => {
-        return (
-          value &&
-          ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
-        );
-      }),
-  });
+    .required("Company Logo is required")
+    .test("fileSize", "File Size should not exceed 10MB", (value) => {
+      return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
+    })
+    .test("fileType", "Unsupported File Format", (value) => {
+      return (
+        value && ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
+      );
+    }),
+   });
 
   const {
     control,
@@ -100,7 +103,7 @@ const CompanyRegister = (prop:any) => {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  /* const onSubmit = async (data: any) => {
     try {
       data.plan_id = selectedPlan.plan_id;
       let urls = end_points.company_register.url;
@@ -117,17 +120,35 @@ const CompanyRegister = (prop:any) => {
       if (data.company_image) {
         console.log("Company Image Name:", data.company_image.name);
         console.log("Company Image Type:", data.company_image.type);
-        console.log(
-          "Company Image Size:",
-          (data.company_image.size / 1024).toFixed(2),
-          "KB"
-        );
+        console.log("Company Image Size:", (data.company_image.size / 1024).toFixed(2), "KB");
       } else {
         console.log("No company image uploaded");
       }
     }
-  };
+  }; */
 
+  const onSubmit = async (data: any) => {
+    try {
+      data.plan_id = selectedPlan.plan_id;
+      let urls = end_points.company_register.url;
+
+      
+      const response = await postData(urls, data);
+      if (response.status === 200) {
+        toast.success('Created Successfully!');
+        navigate('/')
+      } 
+      console.log("response", response);
+    } catch (e: any) {
+      console.log("error====", e.AxiosError)
+      /* if (e.response && e.response.data && e.response.data.message) {
+        // Display error message from server
+        toast.error(e.response.data.message);
+      } */
+      //console.log("response", e.response)
+      toast.error('An error occurred during submission.');
+    }
+  };
   return (
     <>
       {/* Breadcrumb */}
@@ -400,8 +421,7 @@ const CompanyRegister = (prop:any) => {
                   <div className="form-wrap">
                     <div className="upload-info">
                       <label className="file-upload">
-                        <input
-                          name="company_image"
+                        <input name="company_image"
                           type="file"
                           accept="image/png, image/jpeg, image/svg+xml"
                           onChange={handleFileChange}
