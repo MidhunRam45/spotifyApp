@@ -3,21 +3,29 @@ import { Link } from "react-router-dom";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/end_point/end_points";
 import { all_routes } from "../../utils/router/routes";
-import { setPlanId } from "../../core/redux/planSlice";
+import { setPlanData, setPlanType } from "../../core/redux/planSlice";
 import { useDispatch } from "react-redux";
 
 const Plans = () => {
   const { getData } = useContext(ApiServiceContext);
   const [plansList, setPlansList] = useState<any>([]);
+  
+  console.log(plansList);
 
-  const [planType, setPlanType] = useState<boolean>(false);
+  const [planType, setPlan] = useState<boolean>(false);
   const [togglePlan, setTogglePlan] = useState<boolean>(false);
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
-    setPlanType(checked);
-    console.log("Checkbox is checked:", checked);
+
+    setPlan(checked);
+    //console.log(checked);
+    dispatch(setPlanType(checked));
   };
+
+  useEffect(() => {
+    dispatch(setPlanType(false));
+  }, [setPlanType]);
 
   const PlansList = async (search?: any) => {
     let urls = end_points.price_list.url;
@@ -73,48 +81,34 @@ const Plans = () => {
         </div>
         <div className="row justify-content-center">
           {plansList.map((plan: any) => (
-            <div className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
+            <div key={plan.plan_id} className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
               <div className="pricing-card w-100">
                 <div className="pricing-plan-header">
                   <h5>{plan.plan_name}</h5>
                   <h4>
                     <span>{plan.currency}740</span>
                     {plan.currency}
-                    {planType === true ? plan.amount_month : plan.amount_year}
+                    {planType === true ? plan.amount_year : plan.amount_month}
                   </h4>
                   <span className="month-bill annually-bill">
                     /Month (annually billed)
                   </span>
-                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanId(plan.plan_id))} className="btn btn-white">
+                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanData(plan))} className="btn btn-white">
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
                 <div className="pricing-content">
                   <ul>
-                    <li>
-                      <i className="fas fa-check" /> 100 Vehicle
-                    </li>
-                    <li>
-                      <i className="fas fa-check" /> Single Domain
-                    </li>
-                    <li>
-                      <i className="fas fa-check" /> 20 Fleet Manger Create
-                    </li>
-                    <li>
-                      <i className="fas fa-check" /> Driver Dashboard
-                    </li>
-                    <li>
-                      <i className="fas fa-check" /> Service Manger Dashboard
-                    </li>
-                    <li>
+                    {plan.planFeatures.map((feature: any) => (
+                      <li>
+                        <i className="fas fa-check" /> {feature}
+                      </li>
+                    ))}
+                    
+                    {/*<li>
                       <i className="fas fa-xmark" /> Trip
                     </li>
-                    <li>
-                      <i className="fas fa-xmark" /> Tutorial Videos
-                    </li>
-                    <li>
-                      <i className="fas fa-xmark" /> Support
-                    </li>
+                     */}
                   </ul>
                 </div>
               </div>

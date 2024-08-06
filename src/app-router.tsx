@@ -18,9 +18,9 @@ const AppRouter = () => {
     <>
       <Routes>
         <Route>
-          {publicRoutes.map((route, idx) => (
-            <Route path={route.path} element={route.element} key={idx} />
-          ))}
+            {publicRoutes.map((route, idx) => (
+              <Route path={route.path} element={route.element} key={idx} />
+            ))}
         </Route>
       </Routes>
     </>

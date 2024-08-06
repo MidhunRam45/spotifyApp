@@ -1,21 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  planId: 'test',
+  selectedPlan: {},
+  planType: false,
 };
 
 const planSlice = createSlice({
   name: 'plan',
   initialState,
   reducers: {
-    setPlanId(state, action) {
-      state.planId = action.payload;
+    setPlanData(state, action) {
+      state.selectedPlan = action.payload;
     },
-    clearPlanId(state) {
-      state.planId = null;
+    clearPlanData(state) {
+      state.selectedPlan = {};
+    },
+    setPlanType(state, action) {
+      state.planType = action.payload;
     },
   },
 });
 
-export const { setPlanId, clearPlanId } = planSlice.actions;
+export const { setPlanData, clearPlanData, setPlanType } = planSlice.actions;
 export default planSlice.reducer;
