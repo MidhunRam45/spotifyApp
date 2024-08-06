@@ -30,7 +30,7 @@ const Plans = () => {
       setPlansList(response?.data?.data?.prices);
     }
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     PlansList();
   }, []);
@@ -85,7 +85,11 @@ const Plans = () => {
                   <span className="month-bill annually-bill">
                     /Month (annually billed)
                   </span>
-                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanId(plan.plan_id))} className="btn btn-white">
+                  <Link
+                    to={all_routes.companyRegister}
+                    onClick={() => dispatch(setPlanId(plan.plan_id))}
+                    className="btn btn-white"
+                  >
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>

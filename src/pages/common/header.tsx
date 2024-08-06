@@ -68,7 +68,7 @@ const Header = () => {
             </div>
             <ul className="nav header-navbar-rht">
               <li className="nav-item">
-                <Link className="nav-link header-reg" to="#">
+                <Link className="nav-link header-reg" to={routes.companyRegister}>
                   <span />
                   Register
                 </Link>
