@@ -16,6 +16,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
+import { useSelector } from "react-redux";
+import { toast } from 'react-toastify';
+
 
 interface FormValues {
   company_name: string;
@@ -28,10 +31,19 @@ interface FormValues {
   company_image: File | null;
 }
 
-const CompanyRegister = () => {
+const CompanyRegister = (prop:any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
+  const selectedPlan = useSelector(
+    (state: any) => state.plan.selectedPlan
+  );
 
+  const planType = useSelector(
+    (state: any) => state.plan.planType
+  );
+  console.log(selectedPlan);
+
+  
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
@@ -88,11 +100,16 @@ const CompanyRegister = () => {
 
   const onSubmit = async (data: any) => {
     try {
+      data.plan_id = selectedPlan.plan_id;
       let urls = end_points.company_register.url;
       const response = await postData(urls, data);
-      console.log("response", response);
-      console.log("Form submitted");
-      console.log("Form data", data);
+
+      if(response.status == 200){
+        toast.success('Created Successfully!');
+      }
+       console.log("response", response);
+      // console.log("Form submitted");
+      // console.log("Form data", data);
     } catch (e) {
       console.log(e);
       if (data.company_image) {
@@ -180,12 +197,12 @@ const CompanyRegister = () => {
                         </div>
                       </div>
                       <div className="col-md-6">
-                        {/* <div className="form-wrap">
+                        <div className="form-wrap">
                           <label>
                             Domain Name <span className="text-danger">*</span>
                           </label>
                           <Controller defaultValue=""
-                            name="domainName"
+                            name="domain_name"
                             control={control}
                             render={({ field }) => (
                               <input
@@ -196,12 +213,12 @@ const CompanyRegister = () => {
                               />
                             )}
                           />
-                          {errors.domainName && (
+                          {errors.domain_name && (
                             <small className="text-danger">
-                              {errors.domainName.message}
+                              {errors.domain_name.message}
                             </small>
                           )}
-                        </div> */}
+                        </div>
                       </div>
                       <div className="col-md-6">
                         <div className="form-wrap">
@@ -305,7 +322,7 @@ const CompanyRegister = () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Contact Person Name"
+                                placeholder="Enter Name"
                                 {...field}
                               />
                             )}
@@ -331,7 +348,7 @@ const CompanyRegister = () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Contact Person Email"
+                                placeholder="Enter Email"
                                 {...field}
                               />
                             )}
@@ -357,7 +374,7 @@ const CompanyRegister = () => {
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Contact Person Phone Number"
+                                placeholder="Enter Phone Number"
                                 {...field}
                               />
                             )}
@@ -428,28 +445,42 @@ const CompanyRegister = () => {
                   <div className="company-select-header">
                     <div className="plan-header">
                       <h4>
-                        Free Plan
-                        <span>
+                        {selectedPlan.plan_name}
+                        {/* <span>
                           <img src={freeIcon} alt="Icon" /> Free
-                        </span>
+                        </span> */}
                       </h4>
-                      <p>
+                      {/* <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
                         industry's standard.
-                      </p>
+                      </p> */}
                     </div>
                     <div className="plan-duration">
+                    {planType === true ? (
                       <p>
-                        <span>Month</span> $0
+                        <span>Yearly</span>${selectedPlan.amount_year}
                       </p>
+                    ) : (
+                      <p>
+                        <span>Month</span>${selectedPlan.amount_month}
+                      </p>
+                    )}
+
+                      
                     </div>
                   </div>
                   <div className="plan-features">
                     <h6>Features:</h6>
+                    
                     <div className="plan-feature-list">
                       <ul className="nav">
+                      {selectedPlan.planFeatures.map((features: any) => (
                         <li className="feature-bg-gray">
+                          <i className="fas fa-check" /> {features}
+                        </li>
+                      ))}  
+                        {/* <li className="feature-bg-gray">
                           <i className="fas fa-check" /> 10 Vehicle
                         </li>
                         <li className="feature-bg-gray">
@@ -473,12 +504,12 @@ const CompanyRegister = () => {
                         </li>
                         <li className="feature-bg-danger">
                           <i className="fas fa-xmark" /> Support
-                        </li>
+                        </li> */}
                       </ul>
                     </div>
                   </div>
                   <div className="plan-feature-btn">
-                    <Link to="#" className="btn btn-primary">
+                    <Link to="/" className="btn btn-primary">
                       Change Plan
                     </Link>
                   </div>
