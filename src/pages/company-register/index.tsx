@@ -35,6 +35,7 @@ const CompanyRegister = () => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
+    window.scrollTo(0, 0);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -57,16 +58,17 @@ const CompanyRegister = () => {
       "Contact Person Phone Number is required"
     ),
     company_image: Yup.mixed()
-    .required("Company Logo is required")
-    .test("fileSize", "File Size should not exceed 10MB", (value) => {
-      return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
-    })
-    .test("fileType", "Unsupported File Format", (value) => {
-      return (
-        value && ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
-      );
-    }),
-   });
+      .required("Company Logo is required")
+      .test("fileSize", "File Size should not exceed 10MB", (value) => {
+        return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
+      })
+      .test("fileType", "Unsupported File Format", (value) => {
+        return (
+          value &&
+          ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
+        );
+      }),
+  });
 
   const {
     control,
@@ -98,7 +100,11 @@ const CompanyRegister = () => {
       if (data.company_image) {
         console.log("Company Image Name:", data.company_image.name);
         console.log("Company Image Type:", data.company_image.type);
-        console.log("Company Image Size:", (data.company_image.size / 1024).toFixed(2), "KB");
+        console.log(
+          "Company Image Size:",
+          (data.company_image.size / 1024).toFixed(2),
+          "KB"
+        );
       } else {
         console.log("No company image uploaded");
       }
@@ -377,7 +383,8 @@ const CompanyRegister = () => {
                   <div className="form-wrap">
                     <div className="upload-info">
                       <label className="file-upload">
-                        <input name="company_image"
+                        <input
+                          name="company_image"
                           type="file"
                           accept="image/png, image/jpeg, image/svg+xml"
                           onChange={handleFileChange}
