@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 import { all_routes } from "../../utils/router/routes";
 import { logo } from "../../utils/imagepath";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,9 @@ import { setMobileSidebar } from "../../core/redux/sidebarSlice";
 const Header = () => {
   const routes = all_routes;
   const dispatch = useDispatch();
-  const mobileSidebar = useSelector((state: any) => state.sidebar.mobileSidebar);
+  const mobileSidebar = useSelector(
+    (state: any) => state.sidebar.mobileSidebar
+  );
 
   const handleMobileSidebar = () => {
     dispatch(setMobileSidebar(!mobileSidebar));
@@ -40,7 +43,12 @@ const Header = () => {
                 <Link to={routes.landingPage} className="menu-logo">
                   <img src={logo} className="img-fluid" alt="Logo" />
                 </Link>
-                <Link id="menu_close" className="menu-close" to="#" onClick={handleMobileSidebar}>
+                <Link
+                  id="menu_close"
+                  className="menu-close"
+                  to="#"
+                  onClick={handleMobileSidebar}
+                >
                   {" "}
                   <i className="fas fa-times" />
                 </Link>
@@ -61,17 +69,20 @@ const Header = () => {
                 <li>
                   <Link to="#">Contact Us</Link>
                 </li>
-                <li className="login-link">
-                  <Link to="#">Register</Link>
-                </li>
               </ul>
             </div>
             <ul className="nav header-navbar-rht">
               <li className="nav-item">
-                <Link className="nav-link header-reg" to={routes.companyRegister}>
+                <ScrollLink
+                  className="nav-link header-reg"
+                  to="pricing-section"
+                  smooth={true}
+                  duration={300}
+                  offset={-70}
+                >
                   <span />
                   Register
-                </Link>
+                </ScrollLink>
               </li>
             </ul>
           </nav>

@@ -63,9 +63,15 @@ const LandingPage = () => {
                 <div className="banner-content-img">
                   <img src={shape03} alt="Shape" />
                 </div>
-                <Link to="#" className="btn btn-primary">
+                <ScrollLink
+                  to="pricing-section"
+                  smooth={true}
+                  duration={300}
+                  offset={-70}
+                  className="btn btn-primary"
+                >
                   Register
-                </Link>
+                </ScrollLink>
               </div>
               <div className="banner-list aos" data-aos="fade-up">
                 <ul className="nav">
@@ -233,7 +239,7 @@ const LandingPage = () => {
       </section>
       {/* /About Us */}
       {/* Work */}
-      <section className="work-section">
+      <section className="work-section" id="work-section">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -367,7 +373,7 @@ const LandingPage = () => {
       </section>
       {/* /Work */}
       {/* Pricing */}
-      <section className="pricing-section">
+      <section className="pricing-section" id="pricing-section">
         <div className="pricing-shapes">
           <img src={shape09} className="shape-img9" alt="Shape" />
           <img src={shape07} className="shape-img7" alt="Shape" />
@@ -378,7 +384,7 @@ const LandingPage = () => {
       </section>
       {/* /Pricing */}
       {/* Download App */}
-      <section className="download-section">
+      <section className="download-section" id="download-section">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
