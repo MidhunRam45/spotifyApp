@@ -89,6 +89,7 @@ const CompanyRegister = (prop:any) => {
     control,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
@@ -148,6 +149,12 @@ const CompanyRegister = (prop:any) => {
       //console.log("response", e.response)
       toast.error('An error occurred during submission.');
     }
+  };
+
+  //cancel button
+  const handleCancel = () => {
+    reset(); 
+    setPreview(null); 
   };
   return (
     <>
@@ -458,7 +465,7 @@ const CompanyRegister = (prop:any) => {
                     <button type="submit" className="btn btn-primary">
                       Create
                     </button>
-                    <button type="reset" className="btn btn-light">
+                    <button type="reset" className="btn btn-light" onClick={handleCancel}>
                       Cancel
                     </button>
                   </div>
