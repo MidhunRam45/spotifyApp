@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   aboutImg,
   appStore,
@@ -38,10 +38,11 @@ const LandingPage = () => {
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
+
   return (
     <>
       {/* Banner */}
-      <section className="banner-section">
+      <section className="banner-section" id="home">
         <div className="banner-shapes">
           <img
             src={shape02}

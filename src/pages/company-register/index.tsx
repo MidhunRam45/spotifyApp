@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   company_image,
   freeIcon,
@@ -17,8 +17,7 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 interface FormValues {
   company_name: string;
@@ -31,19 +30,14 @@ interface FormValues {
   company_image: File | null;
 }
 
-const CompanyRegister = (prop:any) => {
+const CompanyRegister = (prop: any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
-  const selectedPlan = useSelector(
-    (state: any) => state.plan.selectedPlan
-  );
+  const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
-  const planType = useSelector(
-    (state: any) => state.plan.planType
-  );
+  const planType = useSelector((state: any) => state.plan.planType);
   console.log(selectedPlan);
 
-  
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
@@ -106,10 +100,10 @@ const CompanyRegister = (prop:any) => {
       let urls = end_points.company_register.url;
       const response = await postData(urls, data);
 
-      if(response.status == 200){
-        toast.success('Created Successfully!');
+      if (response.status == 200) {
+        toast.success("Created Successfully!");
       }
-       console.log("response", response);
+      console.log("response", response);
       // console.log("Form submitted");
       // console.log("Form data", data);
     } catch (e) {
@@ -207,7 +201,8 @@ const CompanyRegister = (prop:any) => {
                           <label>
                             Domain Name <span className="text-danger">*</span>
                           </label>
-                          <Controller defaultValue=""
+                          <Controller
+                            defaultValue=""
                             name="domain_name"
                             control={control}
                             render={({ field }) => (
@@ -464,29 +459,27 @@ const CompanyRegister = (prop:any) => {
                       </p> */}
                     </div>
                     <div className="plan-duration">
-                    {planType === true ? (
-                      <p>
-                        <span>Yearly</span>${selectedPlan.amount_year}
-                      </p>
-                    ) : (
-                      <p>
-                        <span>Month</span>${selectedPlan.amount_month}
-                      </p>
-                    )}
-
-                      
+                      {planType === true ? (
+                        <p>
+                          <span>Yearly</span>${selectedPlan.amount_year}
+                        </p>
+                      ) : (
+                        <p>
+                          <span>Month</span>${selectedPlan.amount_month}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="plan-features">
                     <h6>Features:</h6>
-                    
+
                     <div className="plan-feature-list">
                       <ul className="nav">
-                      {selectedPlan.planFeatures.map((features: any) => (
-                        <li className="feature-bg-gray">
-                          <i className="fas fa-check" /> {features}
-                        </li>
-                      ))}  
+                        {selectedPlan.planFeatures.map((features: any) => (
+                          <li className="feature-bg-gray">
+                            <i className="fas fa-check" /> {features}
+                          </li>
+                        ))}
                         {/* <li className="feature-bg-gray">
                           <i className="fas fa-check" /> 10 Vehicle
                         </li>
