@@ -18,6 +18,9 @@ import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+/* import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; */
+import { toast } from "react-toastify";
 
 interface FormValues {
   company_name: string;
@@ -34,6 +37,8 @@ const CompanyRegister = (prop: any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
   const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
+  const navigate = useNavigate();
+  const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
   const planType = useSelector((state: any) => state.plan.planType);
   console.log(selectedPlan);
@@ -41,7 +46,6 @@ const CompanyRegister = (prop: any) => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
-    window.scrollTo(0, 0);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -80,6 +84,7 @@ const CompanyRegister = (prop: any) => {
     control,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
@@ -94,7 +99,7 @@ const CompanyRegister = (prop: any) => {
     }
   };
 
-  const onSubmit = async (data: any) => {
+  /* const onSubmit = async (data: any) => {
     try {
       data.plan_id = selectedPlan.plan_id;
       let urls = end_points.company_register.url;
@@ -111,17 +116,40 @@ const CompanyRegister = (prop: any) => {
       if (data.company_image) {
         console.log("Company Image Name:", data.company_image.name);
         console.log("Company Image Type:", data.company_image.type);
-        console.log(
-          "Company Image Size:",
-          (data.company_image.size / 1024).toFixed(2),
-          "KB"
-        );
+        console.log("Company Image Size:", (data.company_image.size / 1024).toFixed(2), "KB");
       } else {
         console.log("No company image uploaded");
       }
     }
+  }; */
+
+  const onSubmit = async (data: any) => {
+    try {
+      data.plan_id = selectedPlan.plan_id;
+      let urls = end_points.company_register.url;
+
+      const response = await postData(urls, data);
+      if (response.status === 200) {
+        toast.success("Created Successfully!");
+        navigate("/");
+      }
+      console.log("response", response);
+    } catch (e: any) {
+      console.log("error====", e.AxiosError);
+      /* if (e.response && e.response.data && e.response.data.message) {
+        // Display error message from server
+        toast.error(e.response.data.message);
+      } */
+      //console.log("response", e.response)
+      toast.error("An error occurred during submission.");
+    }
   };
 
+  //cancel button
+  const handleCancel = () => {
+    reset();
+    setPreview(null);
+  };
   return (
     <>
       {/* Breadcrumb */}
@@ -433,7 +461,11 @@ const CompanyRegister = (prop: any) => {
                     <button type="submit" className="btn btn-primary">
                       Create
                     </button>
-                    <button type="reset" className="btn btn-light">
+                    <button
+                      type="reset"
+                      className="btn btn-light"
+                      onClick={handleCancel}
+                    >
                       Cancel
                     </button>
                   </div>

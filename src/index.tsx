@@ -14,7 +14,7 @@ import "./assets/icons/fontawesome/css/all.min.css";
 import ApiServiceProvider from "../src/services/api/api.service";
 import AxiosProvider from "./services/interceptor/interceptor";
 import { LoaderProvider } from "./services/loader/loaderContext";
-
+import { ToastContainer } from 'react-toastify';
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -26,6 +26,7 @@ root.render(
           <BrowserRouter>
             <ApiServiceProvider>
               <Pages />
+              <ToastContainer />
             </ApiServiceProvider>
           </BrowserRouter>
         </AxiosProvider>
