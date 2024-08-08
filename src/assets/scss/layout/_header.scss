@@ -48,6 +48,9 @@
                     color: $black;
                     line-height: 75px;
                     font-weight: $font-weight-medium;
+                    @include respond-below(custom1199){
+                        font-size: $font-size-15;
+                    }
                     @include respond-below(custom991) {
                         font-size: $font-size-14;
                     }
@@ -323,7 +326,9 @@
                             margin-right: 0;
                         }
                     }
-                 
+                    @include respond-below(custom1199){
+                        margin-right: 30px;
+                    }
                 ul {
                     @include respond-above(custom992) {
                         background-color: $white   ;
@@ -461,7 +466,7 @@
                 border: 1px solid $primary;                
                 color: $white;
                 border-radius: 8px;
-                font-weight: $font-weight-medium;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-15;
                 @include margin-padding(null, 9px 36px);
                 @extend %animation-effect;
