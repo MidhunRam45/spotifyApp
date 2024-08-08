@@ -4,13 +4,17 @@ import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/end_point/end_points";
 import { all_routes } from "../../utils/router/routes";
 import { setPlanData, setPlanType } from "../../core/redux/planSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Plans = () => {
   const { getData } = useContext(ApiServiceContext);
   const [plansList, setPlansList] = useState<any>([]);
 
   console.log(plansList);
+
+  const plansType = useSelector(
+    (state: any) => state.plan.planType
+  );
 
   const [planType, setPlan] = useState<boolean>(false);
   const [togglePlan, setTogglePlan] = useState<boolean>(false);
@@ -95,7 +99,7 @@ const Plans = () => {
                     {planType === true ? plan.amount_year : plan.amount_month}
                   </h4>
                   <span className="month-bill annually-bill">
-                    /Month (annually billed)
+                  {planType === true ? <span>/Yearly</span>:<span>/Month</span> }
                   </span>
                   <Link
                     to={all_routes.companyRegister}
