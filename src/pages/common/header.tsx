@@ -30,7 +30,9 @@ const Header: React.FC = () => {
   };
 
   const handleSetActiveLink = (link: string) => {
-    setActiveLink(link);
+    if (location.pathname === routes.landingPage) {
+      setActiveLink(link);
+    }
   };
 
   return (
@@ -125,6 +127,7 @@ const Header: React.FC = () => {
                     smooth={true}
                     duration={200}
                     onClick={() => handleSetActiveLink("pricing-section")}
+                    offset={-90}
                   >
                     Pricing
                   </ScrollLink>

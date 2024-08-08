@@ -20,7 +20,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 interface FormValues {
   company_name: string;
@@ -36,7 +36,7 @@ interface FormValues {
 const CompanyRegister = (prop: any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
-  const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
+  // const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
   const navigate = useNavigate();
   const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
@@ -46,6 +46,7 @@ const CompanyRegister = (prop: any) => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
+    window.scrollTo(0, 0);
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -541,7 +542,7 @@ const CompanyRegister = (prop: any) => {
                     </div>
                   </div>
                   <div className="plan-feature-btn">
-                    <Link to="/" className="btn btn-primary">
+                    <Link to="/index" className="btn btn-primary">
                       Change Plan
                     </Link>
                   </div>
