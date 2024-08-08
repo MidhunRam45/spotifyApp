@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
 // import { toast } from "react-toastify";
@@ -20,6 +20,7 @@ import {
   onlyAlphabet,
 } from "../../utils/patterns/regex.pattern";
 import { scroller } from "react-scroll";
+import { setActiveLink } from "../../core/redux/scrollSlice";
 
 interface FormValues {
   company_name: string;
@@ -43,6 +44,8 @@ const CompanyRegister = (prop: any) => {
   console.log(selectedPlan);
 
   const routes = all_routes;
+
+  const dispatch = useDispatch();
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
     window.scrollTo(0, 0);
@@ -484,13 +487,14 @@ const CompanyRegister = (prop: any) => {
                     <button type="submit" className="btn btn-primary">
                       Create
                     </button>
-                    <button
+                    <Link
+                      to="/index"
                       type="reset"
                       className="btn btn-light"
-                      onClick={handleCancel}
+                      onClick={() => dispatch(setActiveLink("pricing-section"))}
                     >
                       Cancel
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </form>
@@ -564,7 +568,11 @@ const CompanyRegister = (prop: any) => {
                     </div>
                   </div>
                   <div className="plan-feature-btn">
-                    <Link to="/index" className="btn btn-primary">
+                    <Link
+                      to="/index"
+                      onClick={() => dispatch(setActiveLink("pricing-section"))}
+                      className="btn btn-primary"
+                    >
                       Change Plan
                     </Link>
                   </div>

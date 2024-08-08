@@ -33,23 +33,100 @@ import "aos/dist/aos.css";
 import AOS from "aos";
 import Plans from "./plans";
 import { scroller, Link as ScrollLink } from "react-scroll";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveLink } from "../../core/redux/scrollSlice";
 
 const LandingPage = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1200, once: true });
-  }, []);
-  const location = useLocation();
+  const dispatch = useDispatch();
+  const activeLink = useSelector((state: any) => state.scroll);
+
+  // useEffect(() => {
+  //   AOS.init({ duration: 1200, once: true });
+  //   // const scrollToSection = () => {
+
+  //   if (activeLink) {
+  //     scroller.scrollTo(activeLink, {
+  //       duration: 800,
+  //       smooth: "easeInOutQuart",
+  //       offset: -30,
+  //     });
+  //   }
+  //   // };
+
+  //   // Timeout to ensure sections are rendered
+  //   // const timer = setTimeout(scrollToSection, 10);
+
+  //   // Cleanup
+  //   return () => {
+  //     // clearTimeout(timer);
+  //     // dispatch(setActiveLink(""));
+  //   };
+  // }, [activeLink]);
 
   useEffect(() => {
-    if (location.state?.scrollToPricing) {
-      scroller.scrollTo('pricing-section', {
-        duration: 800,
-        delay: 0,
-        smooth: 'easeInOutQuart',
-        offSet: -200
-      });
+    AOS.init({ duration: 1200, once: true });
+
+    if (activeLink) {
+      switch (activeLink) {
+        case "home":
+          scroller.scrollTo("home", {
+            duration: 800,
+            smooth: "easeInOutQuart",
+            offset: -100,
+          });
+          break;
+        case "about-us":
+          scroller.scrollTo("about-us", {
+            duration: 800,
+            smooth: "easeInOutQuart",
+            offset: -5,
+          });
+          break;
+        case "work-section":
+          scroller.scrollTo("work-section", {
+            duration: 800,
+            smooth: "easeInOutQuart",
+            offset: -5,
+          });
+          break;
+        case "pricing-section":
+          scroller.scrollTo("pricing-section", {
+            duration: 800,
+            smooth: "easeInOutQuart",
+            offset: -90,
+          });
+          break;
+        case "download-section":
+          scroller.scrollTo("download-section", {
+            // duration: 2500,
+            smooth: "easeInOutQuart",
+            // delay: 200,
+            // offset: 200,
+          });
+          break;
+        default:
+          break;
+      }
+    } else {
+      dispatch(setActiveLink("home"));
     }
-  }, [location]);
+  }, [activeLink]);
+
+  // const location = useLocation();
+
+  // useEffect(() => {
+  //   if (location.state?.scrollToPricing) {
+  //     scroller.scrollTo("pricing-section", {
+  //       duration: 800,
+  //       delay: 0,
+  //       smooth: "easeInOutQuart",
+  //       offSet: -200,
+  //     });
+  //     dispatch(setActiveLink("pricing-section"));
+  //   } else {
+  //     window.scrollTo(0, 0);
+  //   }
+  // }, [location]);
 
   return (
     <>
@@ -82,6 +159,7 @@ const LandingPage = () => {
                   duration={300}
                   offset={-70}
                   className="btn btn-primary"
+                  onClick={() => dispatch(setActiveLink("pricing-section"))}
                 >
                   Register
                 </ScrollLink>
@@ -89,7 +167,12 @@ const LandingPage = () => {
               <div className="banner-list aos" data-aos="fade-up">
                 <ul className="nav">
                   <li>
-                    <Link to="#">
+                    <ScrollLink
+                      to="about-us"
+                      smooth={true}
+                      duration={200}
+                      onClick={() => dispatch(setActiveLink("about-us"))}
+                    >
                       <div className="banner-list-img">
                         <img
                           src={avatar30}
@@ -98,7 +181,7 @@ const LandingPage = () => {
                         />
                       </div>
                       <span>About Us</span>
-                    </Link>
+                    </ScrollLink>
                   </li>
                   <li>
                     <Link to="#">
@@ -385,7 +468,7 @@ const LandingPage = () => {
       </section>
       {/* /Pricing */}
       {/* Download App */}
-      <section className="download-section" id="download-section">
+      <section className="download-section">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -430,7 +513,7 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <div className="download-truck-img">
+          <div className="download-truck-img" id="download-section">
             <img
               src={mobileTruck}
               className="mobile-truck aos"
