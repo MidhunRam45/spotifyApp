@@ -4,13 +4,17 @@ import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/end_point/end_points";
 import { all_routes } from "../../utils/router/routes";
 import { setPlanData, setPlanType } from "../../core/redux/planSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Plans = () => {
   const { getData } = useContext(ApiServiceContext);
   const [plansList, setPlansList] = useState<any>([]);
   
   console.log(plansList);
+
+  const plansType = useSelector(
+    (state: any) => state.plan.planType
+  );
 
   const [planType, setPlan] = useState<boolean>(false);
   const [togglePlan, setTogglePlan] = useState<boolean>(false);
@@ -38,7 +42,7 @@ const Plans = () => {
       setPlansList(response?.data?.data?.prices);
     }
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     PlansList();
   }, []);
@@ -81,7 +85,11 @@ const Plans = () => {
         </div>
         <div className="row justify-content-center">
           {plansList.map((plan: any) => (
-            <div key={plan.plan_id} className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
+            <div
+              key={plan.plan_id}
+              className="col-lg-4 col-md-6 d-flex aos"
+              data-aos="fade-up"
+            >
               <div className="pricing-card w-100">
                 <div className="pricing-plan-header">
                   <h5>{plan.plan_name}</h5>
@@ -91,9 +99,13 @@ const Plans = () => {
                     {planType === true ? plan.amount_year : plan.amount_month}
                   </h4>
                   <span className="month-bill annually-bill">
-                    /Month (annually billed)
+                  {planType === true ? <span>/Yearly</span>:<span>/Month</span> }
                   </span>
-                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanData(plan))} className="btn btn-white">
+                  <Link
+                    to={all_routes.companyRegister}
+                    onClick={() => dispatch(setPlanData(plan))}
+                    className="btn btn-white"
+                  >
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
