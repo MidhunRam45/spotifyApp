@@ -13,7 +13,8 @@ import { useSelector } from "react-redux";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
 import { toast } from "react-toastify";
-import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
+import { addressMaxLength, email, onlyAlphabet } from "../../utils/patterns/regex.pattern";
+import { scroller } from "react-scroll";
 
 interface FormValues {
   company_name: string;
@@ -38,6 +39,7 @@ const CompanyRegister = (prop: any) => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
+    window.scrollTo(0,0)
   }, []);
 
   const validationSchema = Yup.object().shape({
@@ -86,29 +88,29 @@ const CompanyRegister = (prop: any) => {
     //       ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
     //     );
     //   }),
-    company_image: Yup
-    .mixed()
-    .required('Company logo is required')
-    .test('image.value', 'Please upload an image', (value: any) => {
-      if (!value || value.length === 0) {
-        return false
-      } else return true
-    })
-    .test('fileSize', 'File size is too large', (value: any) => {
-      if (value === '') {
-        return false
-      }
-      if (!value || !value.length || typeof value === 'string') {
-        // Skip validation if the field is empty
-        return true
-      }
-      return value && value[0].size <= 2097152
-    }),
+    company_image: Yup.mixed()
+      .required("Company logo is required")
+      .test("image.value", "Please upload an image", (value: any) => {
+        if (!value || value.length === 0) {
+          return false;
+        } else return true;
+      })
+      .test("fileSize", "File size is too large", (value: any) => {
+        if (value === "") {
+          return false;
+        }
+        if (!value || !value.length || typeof value === "string") {
+          // Skip validation if the field is empty
+          return true;
+        }
+        return value && value[0].size <= 2097152;
+      }),
   });
 
   const {
     control,
     setValue,
+    trigger,
     handleSubmit,
     reset,
     formState: { errors },
@@ -162,10 +164,8 @@ const CompanyRegister = (prop: any) => {
     }
   };
 
-  //cancel button
   const handleCancel = () => {
-    reset();
-    setPreview(null);
+    navigate(routes.landingPage, { state: { scrollToPricing: true } });
   };
   return (
     <>
@@ -231,6 +231,10 @@ const CompanyRegister = (prop: any) => {
                                 className="form-control"
                                 placeholder="Enter Company Name"
                                 {...field}
+                                onChange={(e) => {
+                                  field.onChange(e.target.value);
+                                  trigger('company_name')
+                                }}
                               />
                             )}
                           />

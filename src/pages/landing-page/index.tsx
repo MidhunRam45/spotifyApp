@@ -32,12 +32,24 @@ import {
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Plans from "./plans";
-import { Link as ScrollLink } from "react-scroll";
+import { scroller, Link as ScrollLink } from "react-scroll";
 
 const LandingPage = () => {
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollToPricing) {
+      scroller.scrollTo('pricing-section', {
+        duration: 800,
+        delay: 0,
+        smooth: 'easeInOutQuart',
+        offSet: -200
+      });
+    }
+  }, [location]);
 
   return (
     <>
