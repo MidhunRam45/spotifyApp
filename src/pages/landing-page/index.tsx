@@ -32,12 +32,24 @@ import {
 import "aos/dist/aos.css";
 import AOS from "aos";
 import Plans from "./plans";
-import { Link as ScrollLink } from "react-scroll";
+import { scroller, Link as ScrollLink } from "react-scroll";
 
 const LandingPage = () => {
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
   }, []);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollToPricing) {
+      scroller.scrollTo('pricing-section', {
+        duration: 800,
+        delay: 0,
+        smooth: 'easeInOutQuart',
+        offSet: -200
+      });
+    }
+  }, [location]);
 
   return (
     <>
@@ -228,9 +240,9 @@ const LandingPage = () => {
                     />
                   </div>
                   <p>
-                    <Link to="#">
+                    <div>
                       200+ <span>Happy Clients</span>
-                    </Link>
+                    </div>
                   </p>
                 </div>
               </div>
@@ -280,9 +292,6 @@ const LandingPage = () => {
                         random text. It has roots in a piece of classical Latin
                         literature from 45 BC, making
                       </p>
-                      <Link to="#">
-                        Learn More <i className="feather icon-chevron-right" />
-                      </Link>
                     </div>
                   </div>
                 </div>
@@ -307,9 +316,6 @@ const LandingPage = () => {
                         distracted by the readable content of a page when
                         looking at its layout. The point of using Lorem Ipsum
                       </p>
-                      <Link to="#">
-                        Learn More <i className="feather icon-chevron-right" />
-                      </Link>
                     </div>
                   </div>
                 </div>
@@ -334,9 +340,6 @@ const LandingPage = () => {
                         typesetting industry. Lorem Ipsum has been the
                         industry's standard.
                       </p>
-                      <Link to="#">
-                        Learn More <i className="feather icon-chevron-right" />
-                      </Link>
                     </div>
                   </div>
                 </div>
@@ -361,9 +364,6 @@ const LandingPage = () => {
                         is reproduced below for those interested. Sections
                         1.10.32 and 1.10.33 from "de Finibus embed..
                       </p>
-                      <Link to="#">
-                        Learn More <i className="feather icon-chevron-right" />
-                      </Link>
                     </div>
                   </div>
                 </div>

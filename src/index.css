@@ -10,3 +10,9 @@
 .pricing-card:hover .pricing-plan-header .btn-white i {
     color: #fff;
 }
+p.error-msg {
+  font-size: 13px;
+}
+.company-info .upload-info p.error-msg {
+  font-size: 13px;
+}

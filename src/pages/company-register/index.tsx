@@ -1,13 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  company_image,
-  freeIcon,
-  shape04,
-  shape06,
-  shape07,
-  shape09,
-} from "../../utils/imagepath";
+import { shape04, shape06, shape07, shape09 } from "../../utils/imagepath";
 import { all_routes } from "../../utils/router/routes";
 import "aos/dist/aos.css";
 import AOS from "aos";
@@ -17,10 +10,16 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
 // import { toast } from "react-toastify";
+import { toast } from "react-toastify";
+import {
+  addressMaxLength,
+  email,
+  onlyAlphabet,
+} from "../../utils/patterns/regex.pattern";
+import { scroller } from "react-scroll";
 
 interface FormValues {
   company_name: string;
@@ -50,40 +49,74 @@ const CompanyRegister = (prop: any) => {
   }, []);
 
   const validationSchema = Yup.object().shape({
-    company_name: Yup.string().required("Company Name is required"),
-    // domainName: Yup.string().required("Domain Name is required"),
+    company_name: Yup.string().trim().required("Company name is required"),
+    domainName: Yup.string().trim().required("Domain name is required"),
     company_email: Yup.string()
-      .email("Invalid email format")
-      .required("Company Email is required"),
-    company_phone: Yup.string().required("Company Phone Number is required"),
+      .email("Please enter a valid email")
+      .trim()
+      .matches(email, "Please enter a valid email")
+      .required("Email is required"),
+
+    company_phone: Yup.string()
+      .matches(/^[0-9]{10}$/, "Invalid phone number")
+      .required("Company phone number is required"),
+
     address: Yup.string()
-      .max(255, "Maximum 255 characters allowed")
-      .required("Company Address is required"),
-    contact_person_name: Yup.string().required(
-      "Contact Person Name is required"
-    ),
+      .trim()
+      .required("Company address is required")
+      .max(
+        addressMaxLength,
+        `Company address cannot exceed ${addressMaxLength} characters`
+      ),
+
+    contact_person_name: Yup.string()
+      .trim()
+      .required("Contact person name is required"),
+
     contact_person_email: Yup.string()
-      .email("Invalid email format")
-      .required("Contact Person Email is required"),
-    contact_person_phone: Yup.string().required(
-      "Contact Person Phone Number is required"
-    ),
+      .email("Please enter a valid email")
+      .trim()
+      .matches(email, "Please enter a valid email")
+      .required("Email is required"),
+
+    contact_person_phone: Yup.string()
+      .matches(/^[0-9]{10}$/, "Invalid phone number")
+      .required("Contact person phone number is required"),
+
+    // company_image: Yup.mixed()
+    //   .required("Company logo is required")
+    //   .test("fileSize", "File size should not exceed 10MB", (value) => {
+    //     return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
+    //   })
+    //   .test("fileType", "Unsupported File Format", (value) => {
+    //     return (
+    //       value &&
+    //       ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
+    //     );
+    //   }),
     company_image: Yup.mixed()
-      .required("Company Logo is required")
-      .test("fileSize", "File Size should not exceed 10MB", (value) => {
-        return value && value.size <= 10 * 1024 * 1024; // 10MB in bytes
+      .required("Company logo is required")
+      .test("image.value", "Please upload an image", (value: any) => {
+        if (!value || value.length === 0) {
+          return false;
+        } else return true;
       })
-      .test("fileType", "Unsupported File Format", (value) => {
-        return (
-          value &&
-          ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
-        );
+      .test("fileSize", "File size is too large", (value: any) => {
+        if (value === "") {
+          return false;
+        }
+        if (!value || !value.length || typeof value === "string") {
+          // Skip validation if the field is empty
+          return true;
+        }
+        return value && value[0].size <= 2097152;
       }),
   });
 
   const {
     control,
     setValue,
+    trigger,
     handleSubmit,
     reset,
     formState: { errors },
@@ -106,21 +139,12 @@ const CompanyRegister = (prop: any) => {
       let urls = end_points.company_register.url;
       const response = await postData(urls, data);
 
-      if (response.status == 200) {
-        toast.success("Created Successfully!");
+      if (response.status === 200) {
+        toast.success("Company Created Successfully!");
       }
       console.log("response", response);
-      // console.log("Form submitted");
-      // console.log("Form data", data);
     } catch (e) {
       console.log(e);
-      if (data.company_image) {
-        console.log("Company Image Name:", data.company_image.name);
-        console.log("Company Image Type:", data.company_image.type);
-        console.log("Company Image Size:", (data.company_image.size / 1024).toFixed(2), "KB");
-      } else {
-        console.log("No company image uploaded");
-      }
     }
   }; */
 
@@ -146,10 +170,8 @@ const CompanyRegister = (prop: any) => {
     }
   };
 
-  //cancel button
   const handleCancel = () => {
-    reset();
-    setPreview(null);
+    navigate(routes.landingPage, { state: { scrollToPricing: true } });
   };
   return (
     <>
@@ -215,13 +237,17 @@ const CompanyRegister = (prop: any) => {
                                 className="form-control"
                                 placeholder="Enter Company Name"
                                 {...field}
+                                onChange={(e) => {
+                                  field.onChange(e.target.value);
+                                  trigger("company_name");
+                                }}
                               />
                             )}
                           />
                           {errors.company_name && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.company_name.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -243,10 +269,10 @@ const CompanyRegister = (prop: any) => {
                               />
                             )}
                           />
-                          {errors.domain_name && (
-                            <small className="text-danger">
-                              {errors.domain_name.message}
-                            </small>
+                          {errors.domainName && (
+                            <p className="text-danger error-msg mt-1">
+                              {errors.domainName.message}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -269,9 +295,9 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.company_email && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.company_email.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -295,9 +321,9 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.company_phone && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.company_phone.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -321,14 +347,10 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.address && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.address.message}
-                            </small>
+                            </p>
                           )}
-                          <p className="address-maximum">
-                            <i className="feather icon-alert-circle" /> Maximum
-                            255 Characters
-                          </p>
                         </div>
                       </div>
                     </div>
@@ -358,9 +380,9 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.contact_person_name && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.contact_person_name.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -384,9 +406,9 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.contact_person_email && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.contact_person_email.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -410,9 +432,9 @@ const CompanyRegister = (prop: any) => {
                             )}
                           />
                           {errors.contact_person_phone && (
-                            <small className="text-danger">
+                            <p className="text-danger error-msg mt-1">
                               {errors.contact_person_phone.message}
-                            </small>
+                            </p>
                           )}
                         </div>
                       </div>
@@ -436,14 +458,14 @@ const CompanyRegister = (prop: any) => {
                         </span>
                       </label>
                       {errors.company_image && (
-                        <small className="text-danger">
+                        <p className="text-danger error-msg">
                           {errors.company_image.message}
-                        </small>
+                        </p>
                       )}
-                      <p>
+                      {/* <p>
                         <i className="feather icon-alert-circle" /> Maximum File
                         size 10MB &amp; PNG, JPEG, SVG
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                   {preview && (

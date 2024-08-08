@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 const Plans = () => {
   const { getData } = useContext(ApiServiceContext);
   const [plansList, setPlansList] = useState<any>([]);
-  
+
   console.log(plansList);
 
   const [planType, setPlan] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const Plans = () => {
       setPlansList(response?.data?.data?.prices);
     }
   };
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     PlansList();
   }, []);
@@ -81,7 +81,11 @@ const Plans = () => {
         </div>
         <div className="row justify-content-center">
           {plansList.map((plan: any) => (
-            <div key={plan.plan_id} className="col-lg-4 col-md-6 d-flex aos" data-aos="fade-up">
+            <div
+              key={plan.plan_id}
+              className="col-lg-4 col-md-6 d-flex aos"
+              data-aos="fade-up"
+            >
               <div className="pricing-card w-100">
                 <div className="pricing-plan-header">
                   <h5>{plan.plan_name}</h5>
@@ -93,7 +97,11 @@ const Plans = () => {
                   <span className="month-bill annually-bill">
                     /Month (annually billed)
                   </span>
-                  <Link to={all_routes.companyRegister} onClick={() => dispatch(setPlanData(plan))} className="btn btn-white">
+                  <Link
+                    to={all_routes.companyRegister}
+                    onClick={() => dispatch(setPlanData(plan))}
+                    className="btn btn-white"
+                  >
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
@@ -104,7 +112,7 @@ const Plans = () => {
                         <i className="fas fa-check" /> {feature}
                       </li>
                     ))}
-                    
+
                     {/*<li>
                       <i className="fas fa-xmark" /> Trip
                     </li>
