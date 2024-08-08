@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import { all_routes } from "../../utils/router/routes";
 import { logo } from "../../utils/imagepath";
 import { useDispatch, useSelector } from "react-redux";
 import { setMobileSidebar } from "../../core/redux/sidebarSlice";
+import { setActiveLink } from "../../core/redux/scrollSlice";
 import type { RootState } from "../../core/redux/store";
 
 const Header: React.FC = () => {
@@ -13,158 +14,144 @@ const Header: React.FC = () => {
   const mobileSidebar = useSelector(
     (state: RootState) => state.sidebar.mobileSidebar
   );
+  const activeLink = useSelector((state: RootState) => state.scroll);
   const location = useLocation();
 
-  const [activeLink, setActiveLink] = useState<string>("");
-
   useEffect(() => {
-    if (location.pathname === routes.landingPage) {
-      setActiveLink("home");
-    } else {
-      setActiveLink(""); // Clear active link when not on the landing page
+    if (location.pathname !== routes.landingPage) {
+      dispatch(setActiveLink(""));
     }
-  }, [location.pathname, routes.landingPage]);
+    //  else {
+    //   dispatch(setActiveLink(""));
+    // }
+  }, [location.pathname, routes.landingPage, dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(setActiveLink("home"));
+  //   // window.scrollTo(0, 0);
+  // }, []);
 
   const handleMobileSidebar = () => {
     dispatch(setMobileSidebar(!mobileSidebar));
   };
 
   const handleSetActiveLink = (link: string) => {
-    setActiveLink(link);
+    if (location.pathname === routes.landingPage) {
+      dispatch(setActiveLink(link));
+    }
   };
 
   return (
-    <>
-      <header className="header" role="banner">
-        <div className="container">
-          <nav className="navbar navbar-expand-lg header-nav">
-            <div className="navbar-header">
+    <header className="header" role="banner">
+      <div className="container">
+        <nav className="navbar navbar-expand-lg header-nav">
+          <div className="navbar-header">
+            <Link
+              id="mobile_btn"
+              to="#"
+              onClick={handleMobileSidebar}
+              aria-label="Toggle mobile menu"
+            >
+              <span className="bar-icon">
+                <span />
+                <span />
+                <span />
+              </span>
+            </Link>
+            <Link
+              to={routes.landingPage}
+              className="navbar-brand logo"
+              aria-label="Home"
+            >
+              <img src={logo} className="img-fluid" alt="Logo" />
+            </Link>
+            <Link
+              to={routes.landingPage}
+              className="navbar-brand logo-small"
+              aria-label="Home"
+            >
+              <img src={logo} className="img-fluid" alt="Logo" />
+            </Link>
+          </div>
+          <div className="main-menu-wrapper">
+            <div className="menu-header">
               <Link
-                id="mobile_btn"
+                to={routes.landingPage}
+                className="menu-logo"
+                aria-label="Home"
+              >
+                <img src={logo} className="img-fluid" alt="Logo" />
+              </Link>
+              <Link
+                id="menu_close"
+                className="menu-close"
                 to="#"
                 onClick={handleMobileSidebar}
-                aria-label="Toggle mobile menu"
+                aria-label="Close menu"
               >
-                <span className="bar-icon">
-                  <span />
-                  <span />
-                  <span />
-                </span>
-              </Link>
-              <Link
-                to={routes.landingPage}
-                className="navbar-brand logo"
-                aria-label="Home"
-              >
-                <img src={logo} className="img-fluid" alt="Logo" />
-              </Link>
-              <Link
-                to={routes.landingPage}
-                className="navbar-brand logo-small"
-                aria-label="Home"
-              >
-                <img src={logo} className="img-fluid" alt="Logo" />
+                <i className="fas fa-times" />
               </Link>
             </div>
-            <div className="main-menu-wrapper">
-              <div className="menu-header">
+            <ul className="main-nav">
+              <li className={activeLink === "home" ? "active" : ""}>
                 <Link
-                  to={routes.landingPage}
-                  className="menu-logo"
-                  aria-label="Home"
+                  to="/index"
+                  onClick={() => dispatch(setActiveLink("home"))}
                 >
-                  <img src={logo} className="img-fluid" alt="Logo" />
+                  Home
                 </Link>
+              </li>
+              <li className={activeLink === "about-us" ? "active" : ""}>
                 <Link
-                  id="menu_close"
-                  className="menu-close"
-                  to="#"
-                  onClick={handleMobileSidebar}
-                  aria-label="Close menu"
+                  to="/index"
+                  onClick={() => dispatch(setActiveLink("about-us"))}
                 >
-                  <i className="fas fa-times" />
+                  About
                 </Link>
-              </div>
-              <ul className="main-nav">
-                <li className={activeLink === "home" ? "active" : ""}>
-                  <ScrollLink
-                    to="home"
-                    smooth={true}
-                    duration={200}
-                    offset={-200}
-                    onClick={() => handleSetActiveLink("home")}
-                  >
-                    Home
-                  </ScrollLink>
-                </li>
-                <li className={activeLink === "about-us" ? "active" : ""}>
-                  <ScrollLink
-                    to="about-us"
-                    smooth={true}
-                    duration={200}
-                    onClick={() => handleSetActiveLink("about-us")}
-                  >
-                    About
-                  </ScrollLink>
-                </li>
-                <li className={activeLink === "work-section" ? "active" : ""}>
-                  <ScrollLink
-                    to="work-section"
-                    smooth={true}
-                    duration={200}
-                    onClick={() => handleSetActiveLink("work-section")}
-                  >
-                    How it works
-                  </ScrollLink>
-                </li>
-                <li
-                  className={activeLink === "pricing-section" ? "active" : ""}
+              </li>
+              <li className={activeLink === "work-section" ? "active" : ""}>
+                <Link
+                  to="/index"
+                  onClick={() => dispatch(setActiveLink("work-section"))}
                 >
-                  <ScrollLink
-                    to="pricing-section"
-                    smooth={true}
-                    duration={200}
-                    onClick={() => handleSetActiveLink("pricing-section")}
-                  >
-                    Pricing
-                  </ScrollLink>
-                </li>
-                <li
-                  className={activeLink === "download-section" ? "active" : ""}
+                  How it works
+                </Link>
+              </li>
+              <li className={activeLink === "pricing-section" ? "active" : ""}>
+                <Link
+                  to="/index"
+                  onClick={() => dispatch(setActiveLink("pricing-section"))}
                 >
-                  <ScrollLink
-                    to="download-section"
-                    smooth={true}
-                    offset={500}
-                    duration={300}
-                    onClick={() => handleSetActiveLink("download-section")}
-                  >
-                    Contact Us
-                  </ScrollLink>
-                </li>
-              </ul>
-            </div>
-            <ul className="nav header-navbar-rht">
-              <li className="nav-item">
-                <ScrollLink
-                  className={`nav-link header-reg ${
-                    activeLink === "pricing-section" ? "active" : ""
-                  }`}
-                  to="pricing-section"
-                  smooth={true}
-                  duration={300}
-                  offset={-70}
-                  onClick={() => handleSetActiveLink("pricing-section")}
+                  Pricing
+                </Link>
+              </li>
+              <li className={activeLink === "download-section" ? "active" : ""}>
+                <Link
+                  to="/index"
+                  onClick={() => dispatch(setActiveLink("download-section"))}
                 >
-                  <span />
-                  Register
-                </ScrollLink>
+                  Contact Us
+                </Link>
               </li>
             </ul>
-          </nav>
-        </div>
-      </header>
-    </>
+          </div>
+          <ul className="nav header-navbar-rht">
+            <li className="nav-item">
+              <Link
+                className={`nav-link header-reg ${
+                  activeLink === "pricing-section" ? "active" : ""
+                }`}
+                to="/index"
+                onClick={() => dispatch(setActiveLink("pricing-section"))}
+              >
+                <span />
+                Register
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
   );
 };
 
