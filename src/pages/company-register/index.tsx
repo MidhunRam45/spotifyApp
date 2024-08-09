@@ -10,8 +10,7 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
-/* import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; */
+import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
 import { addressMaxLength, email, onlyAlphabet, validMessage } from "../../utils/patterns/regex.pattern";
 
