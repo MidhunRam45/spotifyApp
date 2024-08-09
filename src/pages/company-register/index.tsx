@@ -13,11 +13,12 @@ import { useSelector } from "react-redux";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
 import { toast } from "react-toastify";
-import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
+import { addressMaxLength, email, onlyAlphabet, validMessage } from "../../utils/patterns/regex.pattern";
+
 
 interface FormValues {
   company_name: string;
-  domainName: string;
+  domain_name: string;
   company_email: string;
   company_phone: string;
   address: string;
@@ -39,15 +40,16 @@ const CompanyRegister = (prop: any) => {
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0)
   }, []);
 
   const validationSchema = Yup.object().shape({
     company_name: Yup.string().trim().required("Company name is required")
-    .max(30, "maximum 30 characters allowed"),
+      .max(30, "maximum 30 characters allowed"),
 
-    domainName: Yup.string().trim().required("Domain name is required")
-    .max(6, "maximum 6 characters allowed"),
+    domain_name: Yup.string().trim().required("Domain name is required")
+      .max(6, "maximum 6 characters allowed")
+      .matches(onlyAlphabet, validMessage.onlyAlphabet),
 
     company_email: Yup.string()
       .email("Please enter a valid email")
@@ -56,8 +58,8 @@ const CompanyRegister = (prop: any) => {
       .required("Email is required"),
 
     company_phone: Yup.string()
-    .required("Company phone number is required")
-      .matches(/^[0-9]{16}$/, "Invalid phone number"),
+      .required("Company phone number is required")
+      .matches(/^[0-9]{10,16}$/, "Phone number must be between 10 and 16 digits"),
 
     address: Yup.string()
       .trim()
@@ -70,7 +72,8 @@ const CompanyRegister = (prop: any) => {
     contact_person_name: Yup.string()
       .trim()
       .required("Contact person name is required")
-      .max(30, "maximum 30 characters allowed"),
+      .max(30, "maximum 30 characters allowed")
+      .matches(onlyAlphabet, validMessage.onlyAlphabet),
 
     contact_person_email: Yup.string()
       .email("Please enter a valid email")
@@ -79,7 +82,7 @@ const CompanyRegister = (prop: any) => {
       .required("Email is required"),
 
     contact_person_phone: Yup.string()
-      .matches(/^[0-9]{16}$/, "Invalid phone number")
+      .matches(/^[0-9]{10,16}$/, "Phone number must be between 10 and 16 digits")
       .required("Contact person phone number is required"),
 
     // company_image: Yup.mixed()
@@ -94,23 +97,23 @@ const CompanyRegister = (prop: any) => {
     //     );
     //   }),
     company_image: Yup
-    .mixed()
-    .required('Company logo is required')
-    .test('image.value', 'Please upload an image', (value: any) => {
-      if (!value || value.length === 0) {
-        return false
-      } else return true
-    })
-    .test('fileSize', 'File size is too large', (value: any) => {
-      if (value === '') {
-        return false
-      }
-      if (!value || !value.length || typeof value === 'string') {
-        // Skip validation if the field is empty
-        return true
-      }
-      return value && value[0].size <= 2097152
-    }),
+      .mixed()
+      .required('Company logo is required')
+      .test('image.value', 'Please upload an image', (value: any) => {
+        if (!value || value.length === 0) {
+          return false
+        } else return true
+      })
+      .test('fileSize', 'File size is too large', (value: any) => {
+        if (value === '') {
+          return false
+        }
+        if (!value || !value.length || typeof value === 'string') {
+          // Skip validation if the field is empty
+          return true
+        }
+        return value && value[0].size <= 2097152
+      }),
   });
 
   const {
@@ -119,14 +122,9 @@ const CompanyRegister = (prop: any) => {
     trigger,
     handleSubmit,
     reset,
-    trigger,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
-    defaultValues: {
-      company_name: '',
-      
-    },
   });
 
 
@@ -153,21 +151,23 @@ const CompanyRegister = (prop: any) => {
       console.log("response", response);
     } catch (e: any) {
       console.error("Full error object:", e);
+      toast.error('An error occurred during submission.');
 
-      if (e.response && e.response.data) {
+      /* if (e.response && e.response.data) {
         console.log("Error response data:", e.response.data);
         if (e.response.data.response && e.response.data.response.responseMessage) {
           toast.error(e.response.data.response.responseMessage);
-        } /* else {
+        } else {
           toast.error('An error occurred during submission.');
-        } */
-      }
+        }
+      } */
     }
   };
 
   const handleCancel = () => {
     reset();
     setPreview(null);
+    navigate("/");
   };
   return (
     <>
@@ -232,6 +232,7 @@ const CompanyRegister = (prop: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Enter Company Name"
+                                maxLength={30}
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -254,24 +255,25 @@ const CompanyRegister = (prop: any) => {
                           </label>
                           <Controller
                             defaultValue=""
-                            name="domainName"
+                            name="domain_name"
                             control={control}
                             render={({ field }) => (
                               <input
                                 type="text"
                                 className="form-control"
                                 placeholder="Enter Domain Name"
+                                maxLength={6}
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('domainName');
+                                  trigger('domain_name');
                                 }}
                               />
                             )}
                           />
-                          {errors.domainName && (
+                          {errors.domain_name && (
                             <p className="text-danger error-msg mt-1">
-                              {errors.domainName.message}
+                              {errors.domain_name.message}
                             </p>
                           )}
                         </div>
@@ -290,6 +292,7 @@ const CompanyRegister = (prop: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Enter Company Email"
+                                maxLength={6}
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -319,7 +322,7 @@ const CompanyRegister = (prop: any) => {
                               <input
                                 type="number"
                                 className="form-control custom-number-input"
-                                placeholder="Enter Mobile Number"
+                                placeholder="Enter Company Phone Number"
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -349,7 +352,8 @@ const CompanyRegister = (prop: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Address"
+                                placeholder="Enter Company Address"
+                                maxLength={500}
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -383,18 +387,33 @@ const CompanyRegister = (prop: any) => {
                             name="contact_person_name"
                             control={control}
                             render={({ field }) => (
+
                               <input
+                                {...field}
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Name"
-                                {...field}
+                                placeholder="Enter Contact Person Name"
+                                maxLength={30}
+                                onBlur={() => trigger('contact_person_name')}
                                 onChange={(event: any) => {
                                   field.onChange(event);
                                   trigger('contact_person_name');
                                 }}
+                                onKeyDown={(event) => {
+                                  const regex = onlyAlphabet;
+                                  if (
+                                    !regex.test(event.key) &&
+                                    event.key !== 'Backspace'
+                                  ) {
+                                    event.preventDefault();
+                                  }
+                                }}
+                                autoComplete="false"
                               />
                             )}
                           />
+
+
                           {errors.contact_person_name && (
                             <p className="text-danger error-msg mt-1">
                               {errors.contact_person_name.message}
@@ -416,7 +435,7 @@ const CompanyRegister = (prop: any) => {
                               <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter Email"
+                                placeholder="Enter Contact Person Email"
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -444,9 +463,9 @@ const CompanyRegister = (prop: any) => {
                             control={control}
                             render={({ field }) => (
                               <input
-                                type="text"
+                                type="number"
                                 className="form-control"
-                                placeholder="Enter Phone Number"
+                                placeholder="Enter Contact Person Phone Number"
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
@@ -531,6 +550,7 @@ const CompanyRegister = (prop: any) => {
                           <img src={freeIcon} alt="Icon" /> Free
                         </span> */}
                       </h4>
+                      <p>{selectedPlan.plan_description}</p>
                       {/* <p>
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
@@ -554,8 +574,8 @@ const CompanyRegister = (prop: any) => {
 
                     <div className="plan-feature-list">
                       <ul className="nav">
-                        {selectedPlan.planFeatures.map((features: any) => (
-                          <li className="feature-bg-gray">
+                        {selectedPlan.planFeatures.map((features: any, index: integer) => (
+                          <li key={index} className="feature-bg-gray">
                             <i className="fas fa-check" /> {features}
                           </li>
                         ))}

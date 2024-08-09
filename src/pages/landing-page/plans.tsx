@@ -99,7 +99,7 @@ const Plans = () => {
                     {planType === true ? plan.amount_year : plan.amount_month}
                   </h4>
                   <span className="month-bill annually-bill">
-                  {planType === true ? <span>/Yearly</span>:<span>/Month</span> }
+                  {planType === true ? <span>/ Yearly</span>:<span>/ Monthly</span> }
                   </span>
                   <Link
                     to={all_routes.companyRegister}
