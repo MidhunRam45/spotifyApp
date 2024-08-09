@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
 import { addressMaxLength, email, onlyAlphabet, validMessage } from "../../utils/patterns/regex.pattern";
+import PhoneInputWithRef from "../../utils/phoneInputWithRef";
 
 
 interface FormValues {
@@ -34,7 +35,7 @@ const CompanyRegister = (prop: any) => {
   const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
   const planType = useSelector((state: any) => state.plan.planType);
-  console.log(selectedPlan);
+  console.log(selectedPlan,"selectedPlan");
 
   const routes = all_routes;
   useEffect(() => {
@@ -129,6 +130,7 @@ const CompanyRegister = (prop: any) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log("file", file)
     if (file) {
       setValue("company_image", file, { shouldValidate: true });
       const objectUrl = URL.createObjectURL(file);
@@ -138,17 +140,24 @@ const CompanyRegister = (prop: any) => {
 
 
   const onSubmit = async (data: any) => {
+    console.log(data,"data1")
+    
     try {
-      data.plan_id = selectedPlan.plan_id;
+      console.log("data2")
+      data.PlanId = selectedPlan.plan_id;
+      data.Plan_month = selectedPlan.discount_for;
       let urls = end_points.company_register.url;
 
       const response = await postData(urls, data);
+      console.log("datar",response);
       if (response.status === 200) {
+        console.log("data3")
         toast.success('Created Successfully!');
         navigate('/');
       }
       console.log("response", response);
     } catch (e: any) {
+      console.log("data4")
       console.error("Full error object:", e);
       toast.error('An error occurred during submission.');
 
@@ -460,9 +469,10 @@ const CompanyRegister = (prop: any) => {
                             name="contact_person_phone"
                             control={control}
                             render={({ field }) => (
-                              <input
-                                type="number"
-                                className="form-control"
+                              <PhoneInputWithRef
+                                /* type="number" */
+                               // className="form-control"
+                                country={'in'}
                                 placeholder="Enter Contact Person Phone Number"
                                 {...field}
                                 onChange={(event: any) => {
@@ -572,7 +582,7 @@ const CompanyRegister = (prop: any) => {
 
                     <div className="plan-feature-list">
                       <ul className="nav">
-                        {selectedPlan.planFeatures.map((features: any, index: integer) => (
+                        {selectedPlan.available_PlanFeatures.map((features: any, index: integer) => (
                           <li key={index} className="feature-bg-gray">
                             <i className="fas fa-check" /> {features}
                           </li>

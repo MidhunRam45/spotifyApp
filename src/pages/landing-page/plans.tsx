@@ -109,9 +109,9 @@ const Plans = () => {
                     Choose Plan <i className="feather icon-chevron-right" />
                   </Link>
                 </div>
-                <div className="pricing-content">
+                <div className="pricing-content">   
                   <ul>
-                    {plan.planFeatures.map((feature: any) => (
+                    {plan.available_PlanFeatures.map((feature: any) => (
                       <li>
                         <i className="fas fa-check" /> {feature}
                       </li>
