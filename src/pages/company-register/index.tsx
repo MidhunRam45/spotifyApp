@@ -9,19 +9,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 /* import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; */
-// import { toast } from "react-toastify";
 import { toast } from "react-toastify";
-/* import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
-import {
-  addressMaxLength,
-  email,
-  onlyAlphabet,
-} from "../../utils/patterns/regex.pattern"; */
-import { scroller } from "react-scroll";
-import { setActiveLink } from "../../core/redux/scrollSlice";
 import { addressMaxLength, email, onlyAlphabet, validMessage } from "../../utils/patterns/regex.pattern";
 
 
@@ -40,7 +31,6 @@ interface FormValues {
 const CompanyRegister = (prop: any) => {
   const { postData } = useContext(ApiServiceContext);
   const [preview, setPreview] = useState<string | null>(null);
-  // const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
   const navigate = useNavigate();
   const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
@@ -48,8 +38,6 @@ const CompanyRegister = (prop: any) => {
   console.log(selectedPlan);
 
   const routes = all_routes;
-
-  const dispatch = useDispatch();
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
     window.scrollTo(0, 0)
@@ -139,6 +127,7 @@ const CompanyRegister = (prop: any) => {
     resolver: yupResolver(validationSchema),
   });
 
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -148,6 +137,7 @@ const CompanyRegister = (prop: any) => {
     }
   };
 
+
   const onSubmit = async (data: any) => {
     try {
       data.plan_id = selectedPlan.plan_id;
@@ -155,8 +145,8 @@ const CompanyRegister = (prop: any) => {
 
       const response = await postData(urls, data);
       if (response.status === 200) {
-        toast.success("Created Successfully!");
-        navigate("/");
+        toast.success('Created Successfully!');
+        navigate('/');
       }
       console.log("response", response);
     } catch (e: any) {
@@ -244,9 +234,9 @@ const CompanyRegister = (prop: any) => {
                                 placeholder="Enter Company Name"
                                 maxLength={30}
                                 {...field}
-                                onChange={(e) => {
-                                  field.onChange(e.target.value);
-                                  trigger("company_name");
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('company_name');
                                 }}
                               />
                             )}
@@ -304,6 +294,10 @@ const CompanyRegister = (prop: any) => {
                                 placeholder="Enter Company Email"
                                 maxLength={6}
                                 {...field}
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('company_email');
+                                }}
                               />
                             )}
                           />
@@ -330,6 +324,10 @@ const CompanyRegister = (prop: any) => {
                                 className="form-control custom-number-input"
                                 placeholder="Enter Company Phone Number"
                                 {...field}
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('company_phone');
+                                }}
                               />
                             )}
                           />
@@ -357,6 +355,10 @@ const CompanyRegister = (prop: any) => {
                                 placeholder="Enter Company Address"
                                 maxLength={500}
                                 {...field}
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('address');
+                                }}
                               />
                             )}
                           />
@@ -435,6 +437,10 @@ const CompanyRegister = (prop: any) => {
                                 className="form-control"
                                 placeholder="Enter Contact Person Email"
                                 {...field}
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('contact_person_email');
+                                }}
                               />
                             )}
                           />
@@ -461,6 +467,10 @@ const CompanyRegister = (prop: any) => {
                                 className="form-control"
                                 placeholder="Enter Contact Person Phone Number"
                                 {...field}
+                                onChange={(event: any) => {
+                                  field.onChange(event);
+                                  trigger('contact_person_phone');
+                                }}
                               />
                             )}
                           />
@@ -517,14 +527,13 @@ const CompanyRegister = (prop: any) => {
                     <button type="submit" className="btn btn-primary">
                       Create
                     </button>
-                    <Link
-                      to="/index"
+                    <button
                       type="reset"
                       className="btn btn-light"
-                      onClick={() => dispatch(setActiveLink("pricing-section"))}
+                      onClick={handleCancel}
                     >
                       Cancel
-                    </Link>
+                    </button>
                   </div>
                 </div>
               </form>
@@ -599,11 +608,7 @@ const CompanyRegister = (prop: any) => {
                     </div>
                   </div>
                   <div className="plan-feature-btn">
-                    <Link
-                      to="/index"
-                      onClick={() => dispatch(setActiveLink("pricing-section"))}
-                      className="btn btn-primary"
-                    >
+                    <Link to="/" className="btn btn-primary">
                       Change Plan
                     </Link>
                   </div>
