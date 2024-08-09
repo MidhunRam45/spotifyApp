@@ -291,7 +291,6 @@ const CompanyRegister = (prop: any) => {
                                 type="text"
                                 className="form-control"
                                 placeholder="Enter Company Email"
-                                maxLength={6}
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
