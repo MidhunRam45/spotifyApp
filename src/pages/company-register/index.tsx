@@ -10,11 +10,24 @@ import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
 import { useSelector } from "react-redux";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
-import { addressMaxLength, email, onlyAlphabet, validMessage } from "../../utils/patterns/regex.pattern";
+import {
+  addressMaxLength,
+  email,
+  onlyAlphabet,
+  validMessage,
+} from "../../utils/patterns/regex.pattern";
 import PhoneInputWithRef from "../../utils/phoneInputWithRef";
 
+// import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
+import {
+  addressMaxLength,
+  email,
+  onlyAlphabet,
+} from "../../utils/patterns/regex.pattern";
+import { scroller } from "react-scroll";
+import { setActiveLink } from "../../core/redux/scrollSlice";
 
 interface FormValues {
   company_name: string;
@@ -35,19 +48,23 @@ const CompanyRegister = (prop: any) => {
   const selectedPlan = useSelector((state: any) => state.plan.selectedPlan);
 
   const planType = useSelector((state: any) => state.plan.planType);
-  console.log(selectedPlan,"selectedPlan");
+  console.log(selectedPlan, "selectedPlan");
 
   const routes = all_routes;
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
   }, []);
 
   const validationSchema = Yup.object().shape({
-    company_name: Yup.string().trim().required("Company name is required")
+    company_name: Yup.string()
+      .trim()
+      .required("Company name is required")
       .max(30, "maximum 30 characters allowed"),
 
-    domain_name: Yup.string().trim().required("Domain name is required")
+    domain_name: Yup.string()
+      .trim()
+      .required("Domain name is required")
       .max(6, "maximum 6 characters allowed")
       .matches(onlyAlphabet, validMessage.onlyAlphabet),
 
@@ -59,7 +76,10 @@ const CompanyRegister = (prop: any) => {
 
     company_phone: Yup.string()
       .required("Company phone number is required")
-      .matches(/^[0-9]{10,16}$/, "Phone number must be between 10 and 16 digits"),
+      .matches(
+        /^[0-9]{10,16}$/,
+        "Phone number must be between 10 and 16 digits"
+      ),
 
     address: Yup.string()
       .trim()
@@ -82,7 +102,10 @@ const CompanyRegister = (prop: any) => {
       .required("Email is required"),
 
     contact_person_phone: Yup.string()
-      .matches(/^[0-9]{10,16}$/, "Phone number must be between 10 and 16 digits")
+      .matches(
+        /^[0-9]{10,16}$/,
+        "Phone number must be between 10 and 16 digits"
+      )
       .required("Contact person phone number is required"),
 
     // company_image: Yup.mixed()
@@ -96,23 +119,22 @@ const CompanyRegister = (prop: any) => {
     //       ["image/jpeg", "image/png", "image/svg+xml"].includes(value.type)
     //     );
     //   }),
-    company_image: Yup
-      .mixed()
-      .required('Company logo is required')
-      .test('image.value', 'Please upload an image', (value: any) => {
+    company_image: Yup.mixed()
+      .required("Company logo is required")
+      .test("image.value", "Please upload an image", (value: any) => {
         if (!value || value.length === 0) {
-          return false
-        } else return true
+          return false;
+        } else return true;
       })
-      .test('fileSize', 'File size is too large', (value: any) => {
-        if (value === '') {
-          return false
+      .test("fileSize", "File size is too large", (value: any) => {
+        if (value === "") {
+          return false;
         }
-        if (!value || !value.length || typeof value === 'string') {
+        if (!value || !value.length || typeof value === "string") {
           // Skip validation if the field is empty
-          return true
+          return true;
         }
-        return value && value[0].size <= 2097152
+        return value && value[0].size <= 2097152;
       }),
   });
 
@@ -122,15 +144,15 @@ const CompanyRegister = (prop: any) => {
     trigger,
     handleSubmit,
     reset,
+    // trigger,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
   });
 
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("file", file)
+    console.log("file", file);
     if (file) {
       setValue("company_image", file, { shouldValidate: true });
       const objectUrl = URL.createObjectURL(file);
@@ -138,28 +160,27 @@ const CompanyRegister = (prop: any) => {
     }
   };
 
-
   const onSubmit = async (data: any) => {
-    console.log(data,"data1")
-    
+    console.log(data, "data1");
+
     try {
-      console.log("data2")
+      console.log("data2");
       data.PlanId = selectedPlan.plan_id;
       data.Plan_month = selectedPlan.discount_for;
       let urls = end_points.company_register.url;
 
       const response = await postData(urls, data);
-      console.log("datar",response);
+      console.log("datar", response);
       if (response.status === 200) {
-        console.log("data3")
-        toast.success('Created Successfully!');
-        navigate('/');
+        console.log("data3");
+        toast.success("Created Successfully!");
+        navigate("/");
       }
       console.log("response", response);
     } catch (e: any) {
-      console.log("data4")
+      console.log("data4");
       console.error("Full error object:", e);
-      toast.error('An error occurred during submission.');
+      toast.error("An error occurred during submission.");
 
       /* if (e.response && e.response.data) {
         console.log("Error response data:", e.response.data);
@@ -244,7 +265,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('company_name');
+                                  trigger("company_name");
                                 }}
                               />
                             )}
@@ -274,7 +295,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('domain_name');
+                                  trigger("domain_name");
                                 }}
                               />
                             )}
@@ -303,7 +324,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('company_email');
+                                  trigger("company_email");
                                 }}
                               />
                             )}
@@ -333,7 +354,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('company_phone');
+                                  trigger("company_phone");
                                 }}
                               />
                             )}
@@ -364,7 +385,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('address');
+                                  trigger("address");
                                 }}
                               />
                             )}
@@ -394,23 +415,22 @@ const CompanyRegister = (prop: any) => {
                             name="contact_person_name"
                             control={control}
                             render={({ field }) => (
-
                               <input
                                 {...field}
                                 type="text"
                                 className="form-control"
                                 placeholder="Enter Contact Person Name"
                                 maxLength={30}
-                                onBlur={() => trigger('contact_person_name')}
+                                onBlur={() => trigger("contact_person_name")}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('contact_person_name');
+                                  trigger("contact_person_name");
                                 }}
                                 onKeyDown={(event) => {
                                   const regex = onlyAlphabet;
                                   if (
                                     !regex.test(event.key) &&
-                                    event.key !== 'Backspace'
+                                    event.key !== "Backspace"
                                   ) {
                                     event.preventDefault();
                                   }
@@ -419,7 +439,6 @@ const CompanyRegister = (prop: any) => {
                               />
                             )}
                           />
-
 
                           {errors.contact_person_name && (
                             <p className="text-danger error-msg mt-1">
@@ -446,7 +465,7 @@ const CompanyRegister = (prop: any) => {
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('contact_person_email');
+                                  trigger("contact_person_email");
                                 }}
                               />
                             )}
@@ -471,13 +490,13 @@ const CompanyRegister = (prop: any) => {
                             render={({ field }) => (
                               <PhoneInputWithRef
                                 /* type="number" */
-                               // className="form-control"
-                                country={'in'}
+                                // className="form-control"
+                                country={"in"}
                                 placeholder="Enter Contact Person Phone Number"
                                 {...field}
                                 onChange={(event: any) => {
                                   field.onChange(event);
-                                  trigger('contact_person_phone');
+                                  trigger("contact_person_phone");
                                 }}
                               />
                             )}
@@ -582,11 +601,13 @@ const CompanyRegister = (prop: any) => {
 
                     <div className="plan-feature-list">
                       <ul className="nav">
-                        {selectedPlan.available_PlanFeatures.map((features: any, index: integer) => (
-                          <li key={index} className="feature-bg-gray">
-                            <i className="fas fa-check" /> {features}
-                          </li>
-                        ))}
+                        {selectedPlan.available_PlanFeatures.map(
+                          (features: any, index: integer) => (
+                            <li key={index} className="feature-bg-gray">
+                              <i className="fas fa-check" /> {features}
+                            </li>
+                          )
+                        )}
                         {/* <li className="feature-bg-gray">
                           <i className="fas fa-check" /> 10 Vehicle
                         </li>
