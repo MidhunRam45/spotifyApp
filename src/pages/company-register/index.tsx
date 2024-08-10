@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ApiServiceContext } from "../../services/api/api.service";
 import { end_points } from "../../services/core.index";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import {
@@ -19,13 +19,6 @@ import {
   validMessage,
 } from "../../utils/patterns/regex.pattern";
 import PhoneInputWithRef from "../../utils/phoneInputWithRef";
-
-// import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
-import {
-  addressMaxLength,
-  email,
-  onlyAlphabet,
-} from "../../utils/patterns/regex.pattern";
 import { scroller } from "react-scroll";
 import { setActiveLink } from "../../core/redux/scrollSlice";
 
@@ -49,6 +42,8 @@ const CompanyRegister = (prop: any) => {
 
   const planType = useSelector((state: any) => state.plan.planType);
   console.log(selectedPlan, "selectedPlan");
+
+  const dispatch = useDispatch();
 
   const routes = all_routes;
   useEffect(() => {
@@ -196,7 +191,8 @@ const CompanyRegister = (prop: any) => {
   const handleCancel = () => {
     reset();
     setPreview(null);
-    navigate("/");
+    dispatch(setActiveLink("pricing-section"));
+    navigate("/index");
   };
   return (
     <>
@@ -637,9 +633,9 @@ const CompanyRegister = (prop: any) => {
                     </div>
                   </div>
                   <div className="plan-feature-btn">
-                    <Link to="/" className="btn btn-primary">
+                    <div onClick={handleCancel} className="btn btn-primary">
                       Change Plan
-                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>
