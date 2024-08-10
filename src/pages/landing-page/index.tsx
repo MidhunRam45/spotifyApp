@@ -40,29 +40,6 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   const activeLink = useSelector((state: any) => state.scroll);
 
-  // useEffect(() => {
-  //   AOS.init({ duration: 1200, once: true });
-  //   // const scrollToSection = () => {
-
-  //   if (activeLink) {
-  //     scroller.scrollTo(activeLink, {
-  //       duration: 800,
-  //       smooth: "easeInOutQuart",
-  //       offset: -30,
-  //     });
-  //   }
-  //   // };
-
-  //   // Timeout to ensure sections are rendered
-  //   // const timer = setTimeout(scrollToSection, 10);
-
-  //   // Cleanup
-  //   return () => {
-  //     // clearTimeout(timer);
-  //     // dispatch(setActiveLink(""));
-  //   };
-  // }, [activeLink]);
-
   useEffect(() => {
     AOS.init({ duration: 1200, once: true });
 
@@ -70,38 +47,38 @@ const LandingPage = () => {
       switch (activeLink) {
         case "home":
           scroller.scrollTo("home", {
-            duration: 800,
+            duration: 400,
             smooth: "easeInOutQuart",
             offset: -100,
           });
           break;
         case "about-us":
           scroller.scrollTo("about-us", {
-            duration: 800,
+            duration: 400,
             smooth: "easeInOutQuart",
             offset: -5,
           });
           break;
         case "work-section":
           scroller.scrollTo("work-section", {
-            duration: 800,
+            duration: 400,
             smooth: "easeInOutQuart",
             offset: -5,
           });
           break;
         case "pricing-section":
           scroller.scrollTo("pricing-section", {
-            duration: 800,
+            duration: 400,
             smooth: "easeInOutQuart",
             offset: -90,
           });
           break;
         case "download-section":
           scroller.scrollTo("download-section", {
-            // duration: 2500,
-            smooth: "easeInOutQuart",
+            duration: 800,
+            smooth: "easeIn",
             // delay: 200,
-            // offset: 200,
+            offset: 500,
           });
           break;
         default:

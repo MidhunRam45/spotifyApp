@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import 'react-toastify/dist/ReactToastify.css'; */
 // import { toast } from "react-toastify";
 import { toast } from "react-toastify";
-import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
+// import { addressMaxLength, email } from "../../utils/patterns/regex.pattern";
 import {
   addressMaxLength,
   email,
@@ -125,7 +125,7 @@ const CompanyRegister = (prop: any) => {
     trigger,
     handleSubmit,
     reset,
-    trigger,
+    // trigger,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(validationSchema),
