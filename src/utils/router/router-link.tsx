@@ -1,5 +1,4 @@
 import { Navigate } from "react-router-dom";
-import CompanyRegister from "../../pages/company-register";
 import LandingPage from "../../pages/landing-page";
 import { all_routes } from "./routes";
 
@@ -15,11 +14,6 @@ const publicRoutes = [
     id: 2,
     path: routes.landingPage,
     element: <LandingPage />,
-  },
-  {
-    id: 3,
-    path: routes.companyRegister,
-    element: <CompanyRegister />,
   },
 ];
 

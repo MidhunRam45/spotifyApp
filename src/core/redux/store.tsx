@@ -1,13 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { getPreloadedState, saveToLocalStorage } from "./localStorage";
-import sidebarSlice from "./sidebarSlice";
-import planSlice from "./planSlice";
-import scrollSlice from "./scrollSlice";
 
 const combinedReducer = combineReducers({
-  sidebar: sidebarSlice,
-  plan: planSlice,
-  scroll: scrollSlice,
+  // sidebar: sidebarSlice,
 });
 
 const rootReducer = (state, action) => {

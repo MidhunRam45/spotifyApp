@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { publicRoutes } from "./utils/router/router-link";
-import { favicon } from "./utils/imagepath";
+// import { favicon } from "./utils/imagepath";
 
 const AppRouter = () => {
   useEffect(() => {
@@ -9,7 +9,7 @@ const AppRouter = () => {
       "favicon"
     ) as HTMLLinkElement;
     if (faviconLink) {
-      faviconLink.href = favicon;
+      // faviconLink.href = favicon;
     } else {
       console.error("Favicon link element not found");
     }
