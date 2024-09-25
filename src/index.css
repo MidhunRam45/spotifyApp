@@ -1,18 +1,19 @@
-.pricing-card:hover {
-  background: #ffffff;
-  border: 1px solid #1570ef;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.pricing-card:hover .pricing-plan-header .btn-white {
-  border: 1px solid #0d59c4;
-  background: #0d59c4;
-  color: #fff;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.pricing-card:hover .pricing-plan-header .btn-white i {
-    color: #fff;
-}
-p.error-msg {
-  font-size: 13px;
-}
-.company-info .upload-info p.error-msg {
-  font-size: 13px;
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }

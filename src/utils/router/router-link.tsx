@@ -15,6 +15,11 @@ const publicRoutes = [
     path: routes.landingPage,
     element: <LandingPage />,
   },
+  {
+    id: 3,
+    path: routes.login,
+    element: <LandingPage />,
+  },
 ];
 
 export { publicRoutes };
