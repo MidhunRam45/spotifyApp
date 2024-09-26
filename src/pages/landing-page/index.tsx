@@ -26,7 +26,7 @@ const Landingpage=()=> {
         <div className="landingpage-container">
 
             <div className="login">
-                <Link to={"/loginform"}>login</Link>
+                <Link to={"/login"}>login</Link>
             </div>
 
             <div className="left-bar">

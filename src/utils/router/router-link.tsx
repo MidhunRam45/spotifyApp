@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import LandingPage from "../../pages/landing-page";
 import { all_routes } from "./routes";
+import Login from "../../pages/auth/login";
 
 const routes = all_routes;
 
@@ -18,7 +19,7 @@ const publicRoutes = [
   {
     id: 3,
     path: routes.login,
-    element: <LandingPage />,
+    element: <Login />,
   },
 ];
 
