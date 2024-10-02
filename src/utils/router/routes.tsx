@@ -1,4 +1,5 @@
 export const all_routes = {
   landingPage: '/index',
-  login:'login'
+  login:'login',
+  signup:'signup'
 }

@@ -1,30 +1,29 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../../components/button/index";
 import Input from "../../../components/input/index";
 import { Link } from "react-router-dom";
 import "./login.css";
 import Header from "../../../components/header";
-import { useForm } from "react-hook-form";
+import { LoginSchema, spotifyAuthorization } from "../../../utils/patterns/regex.pattern";
 
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
+
 function Login() {
   const { register, formState: { errors }, handleSubmit } = useForm<LoginFormValues>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    resolver: yupResolver(LoginSchema),
+    mode: "onBlur" 
   });
 
   const handleLogin = () => {
-    // Perform login logic here
   };
 
   const navigateToSpotifyAuthorization = () => {
-    window.location.href = `https://accounts.spotify.com/authorize?client_id=4bc6414edcbb448c8b02535b79c69a71&redirect_uri=http://localhost:3000/homepage&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20playlist-modify-public%20playlist-modify-private%20user-read-currently-playing%20user-read-recently-played%20user-read-playback-state%20user-top-read%20user-modify-playback-state&response_type=token&show_dialog=true`;
+    window.location.href = spotifyAuthorization
   };
 
   const handleFormSubmit = (data: LoginFormValues) => {
@@ -33,6 +32,7 @@ function Login() {
   };
 
   console.log(errors);
+  
 
   return (
     <div className="main-container-login">
@@ -47,20 +47,20 @@ function Login() {
             <div className="sep-one"></div>
 
             <Input
-              type="text"
+              type="email"
               label="Email"
               placeholder="Email"
-              {...register("email", { required: "Email is required" })}
+              register={register("email")}
             />
-            {errors.email && <p style={{color:"red"}}>{errors.email.message}</p>}
+            {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>} 
 
             <Input
               type="password"
               label="Password"
               placeholder="Password"
-              {...register("password", { required: "Password is required" })}
+              register={register("password")}
             />
-            {errors.password && <p style={{color:"red"}}>{errors.password.message}</p>}
+            {errors.password && <p style={{ color: "red" }}>{errors.password.message}</p>} 
 
             <span className="login-butt">
               <Button

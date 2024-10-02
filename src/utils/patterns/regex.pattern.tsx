@@ -1,40 +1,16 @@
-import parsePhoneNumberFromString from 'libphonenumber-js';
+import * as Yup from "yup";
 
-export const alphaNumeric = /^[a-zA-Z0-9 ]+$/;
-export const onlyAlphabet = /^[A-Za-z\s]+$/;
-export const onlyNumber = /^[0-9]/;
+export const emailMaxLength = 20;
+export const passwordMaxLength = 15;
 
-export const userNameRegex = /^[a-zA-Z0-9@. ]+$/;
-/* export const email =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,6}))$/; */
-  export const email =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,63}))$/;
+export const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .required("Email is required")
+    .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, "Invalid email format"),
+    password: Yup.string().required("Password is required")
+  .min(8,"Password must contain atleast 8 charaters")
+  .max(20, "Password must not exceed 20 characters")
+  .matches(/^(?=.*[0-9])(?=.*[@$!%*#?&])[\w@$!%*#?&]+$/, "Password must contain at least one special character and one number"),
+});
 
-export const passwordPattern =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[~`!@#$%^&*()\-_=+\{\}\[\]|\\;:"<>,./?]).{5,10}$/;
-export const addressMaxLength = 500;
-export const nameMaxLength = 30;
-export const userNameMinLength = 5;
-export const emailMaxLength = 30;
-export const passwordMinLength = 5;
-export const passwordMaxLength = 10;
-export const pincodeMaxLength = 6;
-export const aadharMaxLength = 12;
-export const registerNoMaxLength = 10;
-export const chiefComplaintLength = 200;
-export const kioskCodeMaxLength = 10;   
-
-// message
-export const validMessage = {
-  onlyAlphabet: 'Only alphabets and spaces are allowed',
-  nameMaxLength: 'Maximum characters reached',
-  email: 'Please enter your valid email address',
-};
-
-export const validatePhoneNumber = (value: string) => {
-  if (!value.startsWith('+')) {
-    value = `+${value}`;
-  }
-  const phoneNumber = parsePhoneNumberFromString(value);
-  return phoneNumber ? phoneNumber.isValid() : false;
-};
+export const spotifyAuthorization=`https://accounts.spotify.com/authorize?client_id=4bc6414edcbb448c8b02535b79c69a71&redirect_uri=http://localhost:3000/homepage&scope=streaming%20user-read-email%20user-read-private%20user-library-read%20user-library-modify%20playlist-modify-public%20playlist-modify-private%20user-read-currently-playing%20user-read-recently-played%20user-read-playback-state%20user-top-read%20user-modify-playback-state&response_type=token&show_dialog=true`;

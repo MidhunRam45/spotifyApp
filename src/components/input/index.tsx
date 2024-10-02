@@ -1,29 +1,29 @@
 import React from 'react';
-import "./input.css"
+import "./input.css";
 
-type inputprop={
-label?:string,
-type?:string,
-id?:string,
-value?:string,
-onChange:(e:React.ChangeEvent)=>void,
-placeholder:string,
-}
+type inputProp = {
+  label?: string;
+  type?: string;
+  id?: string;
+  placeholder: string;
+  register: any; 
+  errorMessage?: string; 
+};
 
-const Input:React.FC<inputprop> = ({ label, type, id, value, onChange, placeholder })=> {
-    return (
-        <div>
-            <label htmlFor={id}>{label}</label>
-            <input
-                type={type}
-                id={id}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-                className='main-input'
-            />
-        </div>
-    );
+const Input: React.FC<inputProp> = ({ label, type, id, placeholder, register, errorMessage }) => {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input
+        type={type}
+        id={id}
+        placeholder={placeholder}
+        className='main-input'
+        {...register} 
+      />
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+    </div>
+  );
 };
 
 export default Input;
