@@ -3,13 +3,14 @@ import LandingPage from "../../pages/landing-page";
 import { all_routes } from "./routes";
 import Login from "../../pages/auth/login";
 import Signup from "../../pages/auth/signup";
+import HomePage from "../../pages/home page";
 
 const routes = all_routes;
 
 const publicRoutes = [
   {
     id: 1,
-    path: '/',
+    path: "/",
     element: <Navigate to={routes.landingPage} />,
   },
   {
@@ -25,7 +26,12 @@ const publicRoutes = [
   {
     id: 4,
     path: routes.signup,
-    element: <Signup />,
+    element: <Login />,
+  },
+  {
+    id: 5,
+    path: routes.homepage,
+    element: <HomePage />,
   },
 ];
 
