@@ -6,6 +6,7 @@ import {
   faCircleArrowRight,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { getData } from "../../services/api/api.service";
 // import { useUserContext } from "../../context/UserContext";
 
 function Navbar() {
@@ -13,16 +14,20 @@ function Navbar() {
   //   const [user, setUser] = useState(null);
   //   const [showUserDetails, setShowUserDetails] = useState(false);
 
-  //   useEffect(() => {
-  //     getUserDetails().then((userDetails) => {
-  //       if (userDetails) {
-  //         setUser({
-  //           name: userDetails.display_name,
-  //           imageUrl: userDetails.images[0],
-  //         });
-  //       }
-  //     });
-  //   }, []);
+  const getUserDetails = async () => {
+    try {
+      const response = getData("me");
+      if (response) {
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   const logout = () => {
     sessionStorage.removeItem("access_token");
