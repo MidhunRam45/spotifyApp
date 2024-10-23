@@ -57,7 +57,9 @@ function Moviecontent({ description, maincontent }: props) {
   }
 
   const handleClick = () => {
-    navigator("contentboxSongs", { state: { movieContentId: movieContentId } });
+    navigator("movie-content-songs", {
+      state: { movieContentId: movieContentId },
+    });
   };
 
   return (

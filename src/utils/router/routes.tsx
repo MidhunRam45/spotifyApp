@@ -3,4 +3,5 @@ export const all_routes = {
   login: "login",
   signup: "signup",
   homepage: "homepage",
+  movieSongs: "movie-content-songs",
 };

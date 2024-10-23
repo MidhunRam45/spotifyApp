@@ -4,6 +4,7 @@ import { all_routes } from "./routes";
 import Login from "../../pages/auth/login";
 import Signup from "../../pages/auth/signup";
 import HomePage from "../../pages/home page";
+import MoviecontentSongs from "../../components/movie content songs";
 
 const routes = all_routes;
 
@@ -32,6 +33,11 @@ const publicRoutes = [
     id: 5,
     path: routes.homepage,
     element: <HomePage />,
+  },
+  {
+    id: 6,
+    path: routes.movieSongs,
+    element: <MoviecontentSongs />,
   },
 ];
 
