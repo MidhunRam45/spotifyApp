@@ -41,7 +41,7 @@ function ArtistContent({ artistcontent }: any) {
   }
 
   const handleClick = () => {
-    navigator("artistsongs", { state: { artistID: artistID } });
+    navigator("artist-songs", { state: { artistID: artistID } });
   };
 
   return (

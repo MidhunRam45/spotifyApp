@@ -38,9 +38,18 @@ const GlobalContextProvider = ({ children }: any) => {
     }
   };
 
+  const getSongsOfArtist = async (artistId: string) => {
+    try {
+      const response = await getData(
+        `artists/${artistId}/top-tracks?market=IN`
+      );
+      return response;
+    } catch (error) {}
+  };
+
   return (
     <GlobalContext.Provider
-      value={{ getIdOfSongs, getSongsById, getArtistbyId }}
+      value={{ getIdOfSongs, getSongsById, getArtistbyId, getSongsOfArtist }}
     >
       {children}
     </GlobalContext.Provider>

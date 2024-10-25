@@ -4,6 +4,7 @@ import { nestedRoutes, publicRoutes } from "./utils/router/router-link";
 import HomePage from "./pages/home page";
 import ArtistList from "./components/artist list";
 import MoviecontentSongs from "./components/movie content songs";
+import ArtistSongs from "./components/artist songs";
 // import { favicon } from "./utils/imagepath";
 
 const AppRouter = () => {
@@ -39,6 +40,7 @@ const AppRouter = () => {
           <Route path="/homepage" element={<HomePage />}>
             <Route index element={<ArtistList />} />
             <Route path="movie-content-songs" element={<MoviecontentSongs />} />
+            <Route path="artist-songs" element={<ArtistSongs />} />
           </Route>
         </Route>
       </Routes>
