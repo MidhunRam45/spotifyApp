@@ -29,8 +29,19 @@ const GlobalContextProvider = ({ children }: any) => {
     } catch (error) {}
   };
 
+  const getArtistbyId = async (artistId: string) => {
+    try {
+      const response = await getData(`artists/${artistId}`);
+      return response;
+    } catch (error) {
+      console.error("Error fetching artist id:", error);
+    }
+  };
+
   return (
-    <GlobalContext.Provider value={{ getIdOfSongs, getSongsById }}>
+    <GlobalContext.Provider
+      value={{ getIdOfSongs, getSongsById, getArtistbyId }}
+    >
       {children}
     </GlobalContext.Provider>
   );

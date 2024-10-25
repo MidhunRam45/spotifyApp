@@ -6,18 +6,17 @@ import { useGlobalContex } from "../../context/global-context-provider";
 
 function MoviecontentSongs() {
   const location = useLocation();
-  const contenBoxId = location.state.contentBoxId;
+  const movieId = location.state.movieContentId;
 
   const [playlist, setPlaylist] = useState();
 
-  const { getSongsByHeadingId, getUserFavoriteSongs } = useGlobalContex();
+  const { getSongsById, getUserFavoriteSongs } = useGlobalContex();
 
   useEffect(() => {
-    console.log("cont id", contenBoxId);
-    getSongsByHeadingId(contenBoxId).then((songs: any) =>
-      setPlaylist(songs.items)
-    );
-  }, [contenBoxId]);
+    if (movieId) {
+      getSongsById(movieId).then((songs: any) => setPlaylist(songs?.items));
+    }
+  }, [movieId]);
 
   //   const [favData, setFavData] = useState();
   //   useEffect(() => {
@@ -45,6 +44,7 @@ function MoviecontentSongs() {
           //   favData={favData}
         />
       ))}
+      <h1 style={{ color: "white" }}>hiii</h1>
     </div>
   );
 }

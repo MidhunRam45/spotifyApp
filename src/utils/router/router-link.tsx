@@ -29,16 +29,26 @@ const publicRoutes = [
     path: routes.signup,
     element: <Login />,
   },
+];
+
+const nestedRoutes = [
   {
     id: 5,
     path: routes.homepage,
     element: <HomePage />,
-  },
-  {
-    id: 6,
-    path: routes.movieSongs,
-    element: <MoviecontentSongs />,
+    nestedElements: [
+      {
+        id: 6,
+        index: true,
+        element: <MoviecontentSongs />,
+      },
+      {
+        id: 7,
+        path: routes.movieSongs,
+        element: <MoviecontentSongs />,
+      },
+    ],
   },
 ];
 
-export { publicRoutes };
+export { publicRoutes, nestedRoutes };

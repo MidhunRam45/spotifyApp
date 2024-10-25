@@ -13,7 +13,7 @@ type props = {
 function Moviecontent({ description, maincontent }: props) {
   // function Moviecontent() {
   const [songDetails, setSongDetails] = useState(null);
-  const [movieContentId, setmovieContentId] = useState(null);
+  const [movieContentId, setmovieContentId] = useState();
   const navigator = useNavigate();
 
   const { getIdOfSongs, getSongsById } = useGlobalContex();

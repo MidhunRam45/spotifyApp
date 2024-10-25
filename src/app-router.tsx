@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { publicRoutes } from "./utils/router/router-link";
+import { nestedRoutes, publicRoutes } from "./utils/router/router-link";
+import HomePage from "./pages/home page";
+import ArtistList from "./components/artist list";
+import MoviecontentSongs from "./components/movie content songs";
 // import { favicon } from "./utils/imagepath";
 
 const AppRouter = () => {
@@ -18,9 +21,25 @@ const AppRouter = () => {
     <>
       <Routes>
         <Route>
-            {publicRoutes.map((route, idx) => (
-              <Route path={route.path} element={route.element} key={idx} />
-            ))}
+          {publicRoutes.map((route, idx) => (
+            <Route path={route.path} element={route.element} key={idx} />
+          ))}
+          {/* {nestedRoutes?.map((route, idx) => (
+            <Route path={route.path} element={route.element} key={idx}>
+              {route.nestedElements?.map((nestedRoute, idx) => (
+                <Route
+                  path={nestedRoute.path}
+                  element={nestedRoute.element}
+                  key={idx}
+                  index={nestedRoute.index}
+                />
+              ))}
+            </Route>
+          ))} */}
+          <Route path="/homepage" element={<HomePage />}>
+            <Route index element={<ArtistList />} />
+            <Route path="movie-content-songs" element={<MoviecontentSongs />} />
+          </Route>
         </Route>
       </Routes>
     </>
